@@ -181,68 +181,56 @@
                 </div>
 
                 <!-- Berita Terbaru -->
-                <div
-                    class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 hover:shadow-rose-600/20 transition-all duration-500">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-xl font-bold text-neutral-900">Berita Terbaru</h2>
-                        <a href="media.html"
-                            class="text-rose-600 hover:text-rose-700 font-semibold text-sm transition-colors">Lihat
-                            Semua</a>
-                    </div>
+        
+            <div
+                class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 hover:shadow-rose-600/20 transition-all duration-500">
 
-                    <div class="space-y-6">
-                        <!-- News Item 1 -->
-                        <article
-                            class="flex space-x-4 hover:-translate-y-1 hover:shadow-lg hover:shadow-rose-600/10 border border-transparent hover:border-rose-500/30 rounded-xl p-2 transition-all duration-300">
-                            <img src="https://images.unsplash.com/photo-1579952363873-27d3bfad9c0d?q=80"
-                                alt="News thumbnail" class="w-24 h-20 rounded-lg object-cover border border-gray-200">
-                            <div class="flex-1 min-w-0">
-                                <h3
-                                    class="text-sm font-semibold text-neutral-800 hover:text-rose-600 transition-colors mb-1">
-                                    Pemain Baru Ahmad Rizki Siap Debut di Pertandingan Berikutnya
-                                </h3>
-                                <p class="text-xs text-gray-500 mb-1">2 September 2025 • 10:30 WIB</p>
-                                <p class="text-sm text-gray-600 line-clamp-2">Striker muda berbakat ini telah
-                                    menyelesaikan
-                                    proses adaptasi dan siap memberikan kontribusi...</p>
-                            </div>
-                        </article>
-
-                        <!-- News Item 2 -->
-                        <article
-                            class="flex space-x-4 hover:-translate-y-1 hover:shadow-lg hover:shadow-rose-600/10 border border-transparent hover:border-rose-500/30 rounded-xl p-2 transition-all duration-300">
-                            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80"
-                                alt="News thumbnail" class="w-24 h-20 rounded-lg object-cover border border-gray-200">
-                            <div class="flex-1 min-w-0">
-                                <h3
-                                    class="text-sm font-semibold text-neutral-800 hover:text-rose-600 transition-colors mb-1">
-                                    Renovasi Stadion Utama Memasuki Tahap Akhir
-                                </h3>
-                                <p class="text-xs text-gray-500 mb-1">1 September 2025 • 14:15 WIB</p>
-                                <p class="text-sm text-gray-600 line-clamp-2">Fasilitas baru akan meningkatkan kapasitas
-                                    dan
-                                    kenyamanan pengalaman menonton...</p>
-                            </div>
-                        </article>
-
-                        <!-- News Item 3 -->
-                        <article
-                            class="flex space-x-4 hover:-translate-y-1 hover:shadow-lg hover:shadow-rose-600/10 border border-transparent hover:border-rose-500/30 rounded-xl p-2 transition-all duration-300">
-                            <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80"
-                                alt="News thumbnail" class="w-24 h-20 rounded-lg object-cover border border-gray-200">
-                            <div class="flex-1 min-w-0">
-                                <h3
-                                    class="text-sm font-semibold text-neutral-800 hover:text-rose-600 transition-colors mb-1">
-                                    Program Akademi Muda Raih Penghargaan Terbaik
-                                </h3>
-                                <p class="text-xs text-gray-500 mb-1">31 Agustus 2025 • 16:45 WIB</p>
-                                <p class="text-sm text-gray-600 line-clamp-2">Prestasi gemilang dalam pengembangan
-                                    talenta
-                                    muda sepak bola Indonesia...</p>
-                            </div>
-                        </article>
-                    </div>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-neutral-900">Berita Terbaru</h2>
+                    <a href="{{ route('media') }}?tab=news"
+                    class="text-rose-600 hover:text-rose-700 font-semibold text-sm transition-colors">
+                        Lihat Semua
+                    </a>
                 </div>
+
+                <div class="space-y-6">
+                    @forelse ($latestNews as $news)
+                        <article
+                            class="flex space-x-4 hover:-translate-y-1 hover:shadow-lg hover:shadow-rose-600/10
+                                border border-transparent hover:border-rose-500/30 rounded-xl p-2 transition-all duration-300">
+
+                            {{-- Thumbnail --}}
+                            <img
+                                src="{{ asset('storage/' . $news->image_path) }}"
+                                alt="{{ $news->title }}"
+                                class="w-24 h-20 rounded-lg object-cover border border-gray-200"
+                                onerror="this.src='https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg';">
+
+                            {{-- Content --}}
+                            <div class="flex-1 min-w-0">
+                                <h3
+                                    class="text-sm font-semibold text-neutral-800 hover:text-rose-600 transition-colors mb-1 line-clamp-2">
+                                    {{ $news->title }}
+                                </h3>
+
+                                <p class="text-xs text-gray-500 mb-1">
+                                    {{ $news->published_at->translatedFormat('d F Y') }}
+                                    • {{ $news->published_at->format('H:i') }} WIB
+                                </p>
+
+                                <p class="text-sm text-gray-600 line-clamp-2">
+                                    {{ Str::limit(strip_tags($news->content), 80) }}
+                                </p>
+                            </div>
+                        </article>
+                    @empty
+                        <p class="text-sm text-gray-500 text-center">
+                            Belum ada berita terbaru.
+                        </p>
+                    @endforelse
+                </div>
+            </div>
+
 
                 <!-- Jadwal Pertandingan -->
                 <div
@@ -260,8 +248,8 @@
                         <div class="border border-gray-200 rounded-xl p-4 hover:border-rose-500/50 transition">
 
                             {{-- Header --}}
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-sm text-gray-500">Liga 1 Indonesia</span>
+                            <div class="flex items-center justify-end mb-3">
+                                
 
                                 @if ($match->status === 'available')
                                     <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">
@@ -290,15 +278,12 @@
                             </div>
 
                             {{-- Tim --}}
-                            <div class="flex items-center justify-between">
-                                <div class="text-center">
-                                    <div class="text-sm font-semibold">{{ $match->home_team }}</div>
-                                </div>
-                                <div class="font-bold text-gray-500">VS</div>
-                                <div class="text-center">
-                                    <div class="text-sm font-semibold">{{ $match->away_team }}</div>
+                            <div class="flex justify-center">
+                                <div class="text-sm font-bold text-center">
+                                    {{ $match->match_name }}
                                 </div>
                             </div>
+
 
                             {{-- CTA --}}
                             @if ($match->status === 'available')

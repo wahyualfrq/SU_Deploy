@@ -59,26 +59,41 @@
                     @foreach($tickets as $ticket)
                                 {{-- Logic Stock Warning --}}
                                 @php
-                                    $isLowStock = $ticket->stock < 20;
-                                    $isSoldOut = $ticket->stock == 0;
-                                @endphp
+                                $isAvailable = $ticket->status === 'available';
+                                $isUpcoming = $ticket->status === 'upcoming';
+                                $isSoldOut  = $ticket->status === 'sold_out';
+
+                                $isLowStock = $isAvailable && $ticket->stock > 0 && $ticket->stock <= 20;
+                            @endphp
+
 
                                 {{-- PENTING: Tambahkan wire:key agar Livewire bisa melacak elemen --}}
                                 <div wire:key="ticket-{{ $ticket->id }}"
                                     class="group bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 flex flex-col overflow-hidden relative">
 
                                     {{-- Badge Status --}}
-                                    @if($isSoldOut)
-                                        <div
-                                            class="absolute top-4 right-4 bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+                                  
+                                    @if($isSoldOut || ($isAvailable && $ticket->stock == 0))
+                                        <div class="absolute top-4 right-4 bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
                                             SOLD OUT
                                         </div>
+
+                                    @elseif($isUpcoming)
+                                        <div class="absolute top-4 right-4 bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-full z-10">
+                                            Segera Tersedia
+                                        </div>
+
                                     @elseif($isLowStock)
-                                        <div
-                                            class="absolute top-4 right-4 bg-red-100 text-red-600 text-xs font-bold px-3 py-1 rounded-full z-10 animate-pulse">
-                                            🔥 Segera Habis
+                                        <div class="absolute top-4 right-4 bg-red-100 text-red-600 text-xs font-bold px-3 py-1 rounded-full z-10 animate-pulse">
+                                            🔥Segera Habis
+                                        </div>
+
+                                    @elseif($isAvailable)
+                                        <div class="absolute top-4 right-4 bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full z-10">
+                                            Tersedia
                                         </div>
                                     @endif
+
 
                                     {{-- Card Header --}}
                                     {{-- Card Header: Date & Venue --}}

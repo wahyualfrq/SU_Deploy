@@ -16,11 +16,12 @@ return [
         ],
         [
             'label' => 'Pertandingan',
-            'url' => 'tickets.purchase',
+            'url' => 'matches',
         ],
         [
             'label' => 'Media',
             'url' => 'media',
+            'query' => 'tab=all'
         ],
         [
             'label' => 'Kontak',

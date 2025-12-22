@@ -25,7 +25,7 @@ class AuthController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        return redirect()->route('tickets');
+        return redirect()->route('tickets.purchase');
     }
 
 
@@ -54,7 +54,7 @@ class AuthController extends Controller
             ]);
         }
 
-        return redirect()->route('tickets');
+        return redirect()->route('tickets.purchase');
     }
     public function logout(Request $request)
     {

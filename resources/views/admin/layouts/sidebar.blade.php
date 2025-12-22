@@ -25,10 +25,15 @@
         </a>
 
         {{-- Berita --}}
-        <a href="{{ route('admin.news') }}" class="block px-4 py-2 rounded-lg transition-all
-                {{ request()->routeIs('admin.news') ? 'bg-white/20 font-semibold' : 'hover:bg-white/10' }}">
+        <a href="{{ route('admin.news.index') }}" class="block px-4 py-2 rounded-lg transition-all
+                {{ request()->routeIs('admin.news.index') ? 'bg-white/20 font-semibold' : 'hover:bg-white/10' }}">
             Berita
         </a>
+        <a href="{{ route('admin.videos.sync') }}" class="block px-4 py-2 rounded-lg transition-all
+   {{ request()->routeIs('admin.videos.*') ? 'bg-white/20 font-semibold' : 'hover:bg-white/10' }}">
+            YouTube Sync
+        </a>
+
 
         {{-- Pengaturan --}}
         <a href="{{ route('admin.settings') }}" class="block px-4 py-2 rounded-lg transition-all

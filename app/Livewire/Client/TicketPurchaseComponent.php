@@ -41,21 +41,24 @@ class TicketPurchaseComponent extends Component
             return;
         }
 
-        // 🔽 DEMO ORDER (SIAP DISAMBUNG PAYMENT GATEWAY)
         TicketOrder::create([
             'user_id' => auth()->id(),
             'ticket_id' => $ticket->id,
             'quantity' => 1,
             'total_price' => $ticket->price,
-            'status' => 'paid', // DEMO
+            'status' => 'paid',
         ]);
 
         // 🔽 KURANGI STOK
         $ticket->decrement('stock');
 
+        // ✅ INI KUNCINYA
+        $this->ticket->refresh();
+
         session()->flash('success', 'Tiket berhasil dibeli!');
         $this->confirmingTicketId = null;
     }
+
 
     public function render()
     {

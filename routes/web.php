@@ -11,7 +11,9 @@ use App\Livewire\Client\{
     TeamComponent,
     MediaComponent,
     ContactComponent,
-    TicketPurchaseComponent
+    TicketPurchaseComponent,
+    MatchComponent,
+    NewsDetailComponent
 };
 
 // =======================
@@ -19,9 +21,8 @@ use App\Livewire\Client\{
 // =======================
 use App\Livewire\Admin\{
     DashboardComponent,
-    BeritaComponent,
     ManajemenTimComponent,
-    PengaturanComponent
+    PengaturanComponent,
 };
 
 use App\Livewire\Admin\Tickets\{
@@ -29,6 +30,13 @@ use App\Livewire\Admin\Tickets\{
     TicketCreateComponent,
     TicketEditComponent
 };
+
+use App\Livewire\Admin\News\Index as AdminNewsIndex;
+use App\Livewire\Admin\News\Create as AdminNewsCreate;
+use App\Livewire\Admin\News\Edit as AdminNewsEdit;
+
+use App\Livewire\Admin\Videos\VideoSyncComponent;
+
 
 // =======================
 // AUTH
@@ -47,6 +55,7 @@ Route::get('/club', ClubComponent::class)->name('club');
 Route::get('/team', TeamComponent::class)->name('team');
 Route::get('/media', MediaComponent::class)->name('media');
 Route::get('/contact', ContactComponent::class)->name('contact');
+Route::get('/media/news/{news:slug}', NewsDetailComponent::class)->name('media.news.detail');
 
 
 /*
@@ -64,6 +73,9 @@ Route::middleware(['auth', RoleMiddleware::class . ':user'])
         // Detail & beli tiket (INI YANG DIPAKAI HERO)
         Route::get('/tickets/{ticket}', TicketPurchaseComponent::class)
             ->name('tickets.detail');
+
+        Route::get('/pertandingan', MatchComponent::class)
+            ->name('matches');
     });
 
 
@@ -79,13 +91,21 @@ Route::prefix('admin')
 
         Route::get('/dashboard', DashboardComponent::class)->name('dashboard');
         Route::get('/team', ManajemenTimComponent::class)->name('team');
-        Route::get('/news', BeritaComponent::class)->name('news');
         Route::get('/settings', PengaturanComponent::class)->name('settings');
 
         // TICKET MANAGEMENT (SATU-SATUNYA MATCH SOURCE)
         Route::get('/tickets', TicketIndexComponent::class)->name('tickets.index');
         Route::get('/tickets/create', TicketCreateComponent::class)->name('tickets.create');
         Route::get('/tickets/{ticket}/edit', TicketEditComponent::class)->name('tickets.edit');
+
+        // 🔥 ADMIN NEWS (INI WAJIB ADA)
+        Route::get('/news', AdminNewsIndex::class)->name('news.index');
+        Route::get('/news/create', AdminNewsCreate::class)->name('news.create');
+        Route::get('/news/{news}/edit', AdminNewsEdit::class)->name('news.edit');
+
+        Route::get('/videos/sync', VideoSyncComponent::class)
+            ->name('videos.sync');
+
     });
 
 

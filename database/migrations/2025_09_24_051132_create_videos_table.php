@@ -4,25 +4,22 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
-    /**
-     * Run the migrations.
-     */
+return new class extends Migration {
     public function up(): void
     {
         Schema::create('videos', function (Blueprint $table) {
-            $table->id(); // ID unik video
-            $table->string('title'); // Judul video
-            $table->string('youtube_url'); // Link video YouTube
-            $table->date('published_at'); // Tanggal 
-            $table->timestamps(); // Kolom created_at dan updated_at otomatis
+            $table->id();
+            $table->string('title');
+            $table->string('youtube_url');
+            $table->string('youtube_id');
+            $table->string('thumbnail')->nullable();
+            $table->integer('duration')->nullable(); // detik
+            $table->dateTime('published_at');
+            $table->boolean('is_visible')->default(true);
+            $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('videos');
