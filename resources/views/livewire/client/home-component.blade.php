@@ -383,7 +383,7 @@
 
         <!-- CTA -->
         <div class="text-center mt-14">
-            <a href="{{ route('galleries.index') }}"
+             <a href="{{ route('galleries.index') }}"
                class="inline-flex items-center gap-2
                       bg-gradient-to-r from-rose-600 to-red-600
                       hover:from-rose-700 hover:to-red-700

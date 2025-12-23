@@ -13,8 +13,11 @@ class Index extends Component
     }
     public function render()
     {
-        return view('livewire.admin.news.index', [
-            'news' => News::orderByDesc('created_at')->get(),
+        return view('livewire.client.gallery.index', [
+            'galleries' => Gallery::where('is_visible', true)
+                ->withCount('photos')
+                ->latest()
+                ->get()
         ])->layout('admin.layouts.app')
             ->title('Manajemen Berita');
     }

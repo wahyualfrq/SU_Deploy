@@ -11,7 +11,7 @@ class Show extends Component
 
     public function mount(Gallery $gallery)
     {
-        $this->gallery = $gallery->load('photos');
+        $this->gallery = $gallery;
     }
 
     public function render()
