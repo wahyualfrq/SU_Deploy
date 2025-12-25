@@ -9,10 +9,16 @@ class LiveMatch extends Component
 {
     public function render()
     {
-        $match = MatchGame::with(['homeClub', 'awayClub', 'events'])
+        $match = MatchGame::with([
+            'homeClub',
+            'awayClub',
+            'events' => fn($q) => $q->latest()
+        ])
             ->where('status', 'live')
             ->first();
 
-        return view('livewire.client.live-match', compact('match'));
+        return view('livewire.client.live-match', [
+            'match' => $match
+        ]);
     }
 }

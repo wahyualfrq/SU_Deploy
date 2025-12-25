@@ -19,6 +19,10 @@ class MatchGame extends Model
         'away_score',
     ];
 
+     protected $casts = [
+        'match_date' => 'datetime',
+    ];
+
     public function homeClub()
     {
         return $this->belongsTo(Club::class, 'home_club_id');

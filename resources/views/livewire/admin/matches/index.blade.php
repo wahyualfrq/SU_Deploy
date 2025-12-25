@@ -75,12 +75,12 @@
 
                         {{-- HOME --}}
                         <td class="p-3 font-semibold">
-                            {{ $m->home_team }}
+                            {{ $m->homeClub->name ?? '-' }}
                         </td>
 
                         {{-- AWAY --}}
                         <td class="p-3 font-semibold">
-                            {{ $m->away_team }}
+                            {{ $m->awayClub->name ?? '-' }}
                         </td>
 
                         {{-- STADIUM --}}

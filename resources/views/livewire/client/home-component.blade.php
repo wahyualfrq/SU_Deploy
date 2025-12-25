@@ -42,7 +42,7 @@
         {{-- 2. Main Content Layer (Split Layout) --}}
 
         <div
-            class="relative z-10 w-full max-w-[95rem] mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center py-20">
+            class="relative z-10 w-full max-w-[95rem] mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center py-20 pt-32">
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center h-full">
 

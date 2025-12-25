@@ -23,10 +23,6 @@ return [
             'url' => 'media',
             'query' => 'tab=all'
         ],
-        [
-            'label' => 'Kontak',
-            'url' => 'contact',
-        ],
 
         // 'Klub' => [
         //     ['label' => 'Profil Klub', 'url' => '/klub/profil'],

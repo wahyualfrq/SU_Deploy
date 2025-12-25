@@ -4,16 +4,14 @@ namespace App\Livewire\Admin\Matches;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\MatchModel;
+use App\Models\MatchGame;
 
 class Index extends Component
 {
     use WithPagination;
 
     public string $search = '';
-    public string $status = 'all'; // all | scheduled | finished | cancelled
-    public string $sortField = 'match_date';
-    public string $sortDirection = 'asc';
+    public string $status = 'all'; // all | scheduled | live | finished | cancelled
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -24,47 +22,39 @@ class Index extends Component
     {
         $this->resetPage();
     }
+
     public function updatingStatus()
     {
         $this->resetPage();
     }
 
-    public function sortBy(string $field): void
-    {
-        if ($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortField = $field;
-            $this->sortDirection = 'asc';
-        }
-        $this->resetPage();
-    }
-
     public function delete(int $id): void
     {
-        MatchModel::findOrFail($id)->delete();
+        MatchGame::findOrFail($id)->delete();
+
         session()->flash('success', 'Jadwal berhasil dihapus.');
         $this->resetPage();
     }
 
     public function render()
     {
-        $q = MatchModel::query();
+        $matches = MatchGame::with(['homeClub', 'awayClub'])
+            ->when($this->search, function ($q) {
+                $s = trim($this->search);
 
-        if (trim($this->search) !== '') {
-            $s = trim($this->search);
-            $q->where(function ($w) use ($s) {
-                $w->where('home_team', 'like', "%{$s}%")
-                    ->orWhere('away_team', 'like', "%{$s}%")
+                $q->whereHas('homeClub', function ($q) use ($s) {
+                    $q->where('name', 'like', "%{$s}%");
+                })
+                    ->orWhereHas('awayClub', function ($q) use ($s) {
+                        $q->where('name', 'like', "%{$s}%");
+                    })
                     ->orWhere('stadium', 'like', "%{$s}%");
-            });
-        }
-
-        if ($this->status !== 'all') {
-            $q->where('status', $this->status);
-        }
-
-        $matches = $q->orderBy($this->sortField, $this->sortDirection)->paginate(10);
+            })
+            ->when($this->status !== 'all', function ($q) {
+                $q->where('status', $this->status);
+            })
+            ->orderBy('match_date', 'desc')
+            ->paginate(10);
 
         return view('livewire.admin.matches.index', compact('matches'))
             ->layout('admin.layouts.app')

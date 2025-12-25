@@ -157,6 +157,12 @@ Route::prefix('admin')
             return redirect()->route('admin.matches.live', $match->id);
         })->name('matches.live.active');
 
+        Route::get('/pertandingan/live', LiveMatch::class)->name('client.live');
+        Route::get('/pertandingan', MatchComponent::class)->name('matches');
+        Route::get('/pertandingan', MatchComponent::class)
+            ->name('matches.page');
+
+
 
     });
 
