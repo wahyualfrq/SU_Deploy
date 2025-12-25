@@ -44,10 +44,11 @@ class HomeComponent extends Component
 
         /* =========================
          * NEXT MATCH (HERO CARD)
-         * SOURCE: tickets
          * ========================= */
         $this->nextMatch = Ticket::query()
             ->join('matches', 'matches.id', '=', 'tickets.match_id')
+            ->join('clubs as home_club', 'home_club.id', '=', 'matches.home_club_id')
+            ->join('clubs as away_club', 'away_club.id', '=', 'matches.away_club_id')
             ->where('tickets.is_active', true)
             ->where('matches.match_date', '>=', $now)
             ->orderByRaw("
@@ -60,13 +61,15 @@ class HomeComponent extends Component
             ->select([
                 'tickets.*',
                 'matches.match_date',
-                'matches.home_team',
-                'matches.away_team',
                 'matches.stadium',
+                'home_club.name as home_team',
+                'away_club.name as away_team',
             ])
             ->first();
 
-        /* COUNTDOWN */
+        /* =========================
+         * COUNTDOWN
+         * ========================= */
         $this->countdown = ['days' => 0, 'hours' => 0, 'minutes' => 0];
 
         if ($this->nextMatch?->match_date) {
@@ -84,27 +87,27 @@ class HomeComponent extends Component
          * ========================= */
         $this->upcomingMatches = Ticket::query()
             ->join('matches', 'matches.id', '=', 'tickets.match_id')
+            ->join('clubs as home_club', 'home_club.id', '=', 'matches.home_club_id')
+            ->join('clubs as away_club', 'away_club.id', '=', 'matches.away_club_id')
             ->whereDate('matches.match_date', '>=', now()->toDateString())
             ->orderByRaw("
-        CASE
-            WHEN tickets.sales_status = 'available' THEN 0
-            WHEN tickets.sales_status = 'upcoming' THEN 1
-            ELSE 2
-        END
-    ")
+                CASE
+                    WHEN tickets.sales_status = 'available' THEN 0
+                    WHEN tickets.sales_status = 'upcoming' THEN 1
+                    ELSE 2
+                END
+            ")
             ->orderBy('matches.match_date', 'asc')
             ->select([
                 'tickets.id',
                 'tickets.sales_status',
                 'matches.match_date',
-                'matches.home_team',
-                'matches.away_team',
                 'matches.stadium',
+                'home_club.name as home_team',
+                'away_club.name as away_team',
             ])
             ->limit(3)
             ->get();
-
-
 
         /* =========================
          * BERITA

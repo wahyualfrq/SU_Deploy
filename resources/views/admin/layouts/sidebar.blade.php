@@ -13,6 +13,19 @@
             Dashboard
         </a>
 
+        {{-- Manajemen Klub --}}
+        <a href="{{ route('admin.clubs.index') }}" class="block px-4 py-2 rounded-lg transition-all
+   {{ request()->routeIs('admin.clubs.*') ? 'bg-white/20 font-semibold' : 'hover:bg-white/10' }}">
+            Manajemen Klub
+        </a>
+
+        {{-- 🔴 LIVE MATCH --}}
+        <a href="{{ route('admin.matches.live.active') }}" class="block px-4 py-2 rounded-lg transition-all
+   {{ request()->routeIs('admin.matches.live*') ? 'bg-white/20 font-semibold' : 'hover:bg-white/10' }}">
+            🔴 Live Match
+        </a>
+
+
         {{-- 🔥 JADWAL PERTANDINGAN (BARU) --}}
         <a href="{{ route('admin.matches.index') }}" class="block px-4 py-2 rounded-lg transition-all
            {{ request()->routeIs('admin.matches.*') ? 'bg-white/20 font-semibold' : 'hover:bg-white/10' }}">

@@ -5,21 +5,36 @@
     </div>
 
     <div class="bg-white rounded-xl shadow p-5 space-y-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            {{-- HOME CLUB --}}
             <div>
-                <label class="text-sm font-semibold">Home Team</label>
-                <input wire:model="home_team" type="text"
-                    class="mt-1 w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none">
-                @error('home_team') <div class="text-xs text-red-600 mt-1">{{ $message }}</div> @enderror
+                <label class="block text-sm font-semibold mb-2">Home Team</label>
+                <select wire:model="home_club_id"
+                    class="w-full rounded-xl border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-indigo-200">
+                    <option value="">Pilih Klub Home</option>
+                    @foreach($clubs as $club)
+                        <option value="{{ $club->id }}">{{ $club->name }}</option>
+                    @endforeach
+                </select>
+                @error('home_club_id') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
             </div>
 
+            {{-- AWAY CLUB --}}
             <div>
-                <label class="text-sm font-semibold">Away Team</label>
-                <input wire:model="away_team" type="text"
-                    class="mt-1 w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none">
-                @error('away_team') <div class="text-xs text-red-600 mt-1">{{ $message }}</div> @enderror
+                <label class="block text-sm font-semibold mb-2">Away Team</label>
+                <select wire:model="away_club_id"
+                    class="w-full rounded-xl border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-indigo-200">
+                    <option value="">Pilih Klub Away</option>
+                    @foreach($clubs as $club)
+                        <option value="{{ $club->id }}">{{ $club->name }}</option>
+                    @endforeach
+                </select>
+                @error('away_club_id') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
             </div>
+
         </div>
+
 
         <div>
             <label class="text-sm font-semibold">Tanggal & Jam</label>
@@ -39,11 +54,13 @@
             <label class="block text-sm font-semibold mb-1">Status</label>
             <select wire:model="status" class="w-full border border-gray-300 rounded-lg px-3 py-2">
                 <option value="scheduled">Scheduled</option>
+                <option value="live">Live</option>
                 <option value="finished">Finished</option>
                 <option value="cancelled">Cancelled</option>
             </select>
             @error('status') <div class="text-xs text-red-600 mt-1">{{ $message }}</div> @enderror
         </div>
+
 
         <div class="flex gap-2">
             <a href="{{ route('admin.matches.index') }}"

@@ -27,12 +27,14 @@ class TicketPurchaseComponent extends Component
         if ($ticket) {
             $this->ticket = Ticket::query()
                 ->join('matches', 'tickets.match_id', '=', 'matches.id')
+                ->join('clubs as home_club', 'home_club.id', '=', 'matches.home_club_id')
+                ->join('clubs as away_club', 'away_club.id', '=', 'matches.away_club_id')
                 ->where('tickets.id', $ticket)
                 ->select(
                     'tickets.*',
                     'matches.match_date',
                     'matches.stadium',
-                    DB::raw("CONCAT(matches.home_team,' vs ',matches.away_team) AS match_name")
+                    DB::raw("CONCAT(home_club.name,' vs ',away_club.name) AS match_name")
                 )
                 ->firstOrFail();
         }
@@ -98,21 +100,28 @@ class TicketPurchaseComponent extends Component
 
         $tickets = Ticket::query()
             ->join('matches', 'tickets.match_id', '=', 'matches.id')
+            ->join('clubs as home_club', 'home_club.id', '=', 'matches.home_club_id')
+            ->join('clubs as away_club', 'away_club.id', '=', 'matches.away_club_id')
             ->where('tickets.is_active', true)
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('matches.home_team', 'LIKE', "%{$search}%")
-                        ->orWhere('matches.away_team', 'LIKE', "%{$search}%")
-                        ->orWhere('matches.stadium', 'LIKE', "%{$search}%");
+                    $q->where('home_club.name', 'LIKE', "%{$search}%")
+                      ->orWhere('away_club.name', 'LIKE', "%{$search}%")
+                      ->orWhere('matches.stadium', 'LIKE', "%{$search}%");
                 });
             })
-            ->orderByRaw("CASE tickets.sales_status WHEN 'available' THEN 0 ELSE 1 END")
+            ->orderByRaw("
+                CASE
+                    WHEN tickets.sales_status = 'available' THEN 0
+                    ELSE 1
+                END
+            ")
             ->orderBy('matches.match_date', 'asc')
             ->select(
                 'tickets.*',
                 'matches.match_date',
                 'matches.stadium',
-                DB::raw("CONCAT(matches.home_team,' vs ',matches.away_team) AS match_name")
+                DB::raw("CONCAT(home_club.name,' vs ',away_club.name) AS match_name")
             )
             ->get();
 

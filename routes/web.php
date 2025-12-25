@@ -53,6 +53,13 @@ use App\Livewire\Admin\Matches\Index as AdminMatchIndex;
 use App\Livewire\Admin\Matches\Create as AdminMatchCreate;
 use App\Livewire\Admin\Matches\Edit as AdminMatchEdit;
 
+use App\Livewire\Admin\Clubs\Index;
+use App\Livewire\Admin\Clubs\Create;
+
+use App\Livewire\Client\LiveMatch;
+use App\Livewire\Admin\Matches\LiveControl;
+use App\Models\MatchGame;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -131,6 +138,25 @@ Route::prefix('admin')
             Route::get('/create', AdminMatchCreate::class)->name('create');
             Route::get('/{match}/edit', AdminMatchEdit::class)->name('edit');
         });
+
+        Route::get('/clubs', Index::class)->name('clubs.index');
+        Route::get('/clubs/create', Create::class)->name('clubs.create');
+
+        Route::get('/pertandingan/live', LiveMatch::class);
+        Route::get('/matches/{matchId}/live', LiveControl::class)
+            ->name('matches.live');
+
+        Route::get('/matches/live', function () {
+            $match = MatchGame::where('status', 'live')->first();
+
+            if (!$match) {
+                return redirect()->route('admin.matches.index')
+                    ->with('error', 'Tidak ada pertandingan yang sedang live');
+            }
+
+            return redirect()->route('admin.matches.live', $match->id);
+        })->name('matches.live.active');
+
 
     });
 
