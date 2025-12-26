@@ -13,7 +13,7 @@ class SyncYouTubeVideos extends Command
 
     public function handle(YouTubeService $youtube)
     {
-        $videos = $youtube->fetchLatestVideos(10);
+        $videos = $youtube->fetchLatestVideos(9);
 
         foreach ($videos as $video) {
             Video::updateOrCreate(

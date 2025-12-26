@@ -16,19 +16,12 @@
     @include('admin.layouts.header')
     @include('admin.layouts.sidebar')
 
-    <!-- Bagian yang akan berisi semua komponen Livewire -->
     <main class="flex-1 p-6 pt-24 lg:ml-64">
         {{ $slot }}
     </main>
 
-    @if(auth()->user()->isAdmin())
-        @include('admin.layouts.sidebar')
-    @else
-        @include('client.layouts.navbar')
-    @endif
-
-
     @livewireScripts
 </body>
+
 
 </html>
