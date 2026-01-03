@@ -10,8 +10,12 @@
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.2",
         "laravel/tinker": "^2.10.1",
+<<<<<<< HEAD
         "livewire/livewire": "^3.7",
         "maatwebsite/excel": "^3.1"
+=======
+        "livewire/livewire": "^3.7"
+>>>>>>> 5ccdc1136a48a9455443e147b6f7cf6521b63faf
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

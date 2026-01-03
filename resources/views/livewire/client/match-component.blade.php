@@ -165,6 +165,7 @@
                         <div class="p-6">
                             <div class="flex justify-between items-center mb-6 h-16">
                                 <div class="text-center flex-1">
+<<<<<<< HEAD
                                     <img
     src="{{ 
         $match->homeClub->logo
@@ -173,11 +174,15 @@
                 : asset('storage/' . $match->homeClub->logo))
             : asset('images/default-club.png')
     }}"
+=======
+                                    <img src="{{ $match->homeClub->logo ? asset('storage/' . $match->homeClub->logo) : asset('images/default-club.png') }}"
+>>>>>>> 5ccdc1136a48a9455443e147b6f7cf6521b63faf
                                         class="w-12 h-12 mx-auto object-contain mb-2 group-hover:scale-110 transition-transform duration-300">
                                     <div
                                         class="text-[9px] font-black uppercase text-slate-900 tracking-tighter leading-tight">
                                         {{ $match->homeClub->name }}</div>
                                 </div>
+<<<<<<< HEAD
                                 <div class="text-[9px] font-black text-slate-900 italic uppercase">VS</div>
                                 <div class="text-center flex-1">
                                     <img
@@ -188,6 +193,11 @@
                 : asset('storage/' . $match->awayClub->logo))
             : asset('images/default-club.png')
     }}"
+=======
+                                <div class="text-[9px] font-black text-slate-200 italic uppercase">VS</div>
+                                <div class="text-center flex-1">
+                                    <img src="{{ $match->awayClub->logo ? asset('storage/' . $match->awayClub->logo) : asset('images/default-club.png') }}"
+>>>>>>> 5ccdc1136a48a9455443e147b6f7cf6521b63faf
                                         class="w-12 h-12 mx-auto object-contain mb-2 group-hover:scale-110 transition-transform duration-300">
                                     <div
                                         class="text-[9px] font-black uppercase text-slate-900 tracking-tighter leading-tight">
