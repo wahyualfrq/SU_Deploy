@@ -4,42 +4,44 @@ namespace App\Livewire\Admin\Matches;
 
 use Livewire\Component;
 use App\Models\MatchModel;
+use App\Models\Club;
 
 class Edit extends Component
 {
     public MatchModel $match;
 
-    public string $home_team = '';
-    public string $away_team = '';
-    public string $match_date = '';
-    public ?string $stadium = null;
-    public string $status = 'scheduled';
+    public $home_club_id;
+    public $away_club_id;
+    public $match_date;
+    public $stadium;
+    public $status = 'scheduled';
 
     public function mount(MatchModel $match)
     {
         $this->match = $match;
 
-        $this->home_team = $match->home_team;
-        $this->away_team = $match->away_team;
-        $this->match_date = optional($match->match_date)->format('Y-m-d\TH:i') ?? '';
-        $this->stadium = $match->stadium;
-        $this->status = $match->status ?? 'scheduled';
+        $this->home_club_id = $match->home_club_id;
+        $this->away_club_id = $match->away_club_id;
+        $this->match_date  = optional($match->match_date)->format('Y-m-d\TH:i') ?? '';
+        $this->stadium     = $match->stadium ?? '';
+        $this->status      = $match->status ?? 'scheduled';
     }
 
     protected function rules(): array
     {
         return [
-            'home_team' => ['required', 'string', 'max:255'],
-            'away_team' => ['required', 'string', 'max:255'],
-            'match_date' => ['required', 'date'],
-            'stadium' => ['nullable', 'string', 'max:255'],
-            'status' => ['required', 'in:scheduled,finished,cancelled'],
+            'home_club_id' => 'required|different:away_club_id',
+            'away_club_id' => 'required',
+            'match_date'   => 'required|date',
+            'stadium'      => 'required|string|max:255',
+            'status'       => 'required|in:scheduled,live,finished,cancelled',
         ];
     }
 
     public function update()
     {
         $data = $this->validate();
+
         $this->match->update($data);
 
         session()->flash('success', 'Jadwal berhasil diupdate.');
@@ -48,8 +50,11 @@ class Edit extends Component
 
     public function render()
     {
-        return view('livewire.admin.matches.edit')
-            ->layout('admin.layouts.app')
-            ->title('Edit Jadwal');
+        return view('livewire.admin.matches.edit', [
+            'clubs' => Club::where('is_active', true)
+                ->orderBy('name')
+                ->get()
+        ])->layout('admin.layouts.app')
+          ->title('Edit Jadwal Pertandingan');
     }
 }

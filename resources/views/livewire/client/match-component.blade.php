@@ -84,8 +84,18 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-6 mb-10">
                             <div class="flex flex-col items-center" data-aos="fade-right" data-aos-delay="400">
-                                <img src="{{ $liveMatch->homeClub->logo ? asset('storage/' . $liveMatch->homeClub->logo) : asset('images/default-club.png') }}"
-                                    class="w-20 h-20 md:w-28 md:h-28 rounded-full mb-4 object-cover border-2 border-slate-800 shadow-2xl transition-transform hover:scale-110 duration-500">
+                                <img
+                                src="{{ 
+                                    $liveMatch->homeClub->logo
+                                        ? (str_starts_with($liveMatch->homeClub->logo, 'http')
+                                            ? $liveMatch->homeClub->logo
+                                            : asset('storage/' . $liveMatch->homeClub->logo))
+                                        : asset('images/default-club.png')
+                                }}"
+                                class="w-20 h-20 md:w-28 md:h-28 rounded-full mb-4 object-cover
+                                    border-2 border-slate-800 shadow-2xl transition-transform
+                                    hover:scale-110 duration-500">
+
                                 <h3 class="text-lg font-black text-white uppercase italic tracking-tighter">
                                     {{ $liveMatch->homeClub->name }}</h3>
                             </div>
@@ -103,8 +113,18 @@
                             </div>
 
                             <div class="flex flex-col items-center" data-aos="fade-left" data-aos-delay="400">
-                                <img src="{{ $liveMatch->awayClub->logo ? asset('storage/' . $liveMatch->awayClub->logo) : asset('images/default-club.png') }}"
-                                    class="w-20 h-20 md:w-28 md:h-28 rounded-full mb-4 object-cover border-2 border-slate-800 shadow-2xl transition-transform hover:scale-110 duration-500">
+                                <img
+                                src="{{ 
+                                    $liveMatch->awayClub->logo
+                                        ? (str_starts_with($liveMatch->awayClub->logo, 'http')
+                                            ? $liveMatch->awayClub->logo
+                                            : asset('storage/' . $liveMatch->awayClub->logo))
+                                        : asset('images/default-club.png')
+                                }}"
+                                class="w-20 h-20 md:w-28 md:h-28 rounded-full mb-4 object-cover
+                                    border-2 border-slate-800 shadow-2xl transition-transform
+                                    hover:scale-110 duration-500">
+
                                 <h3 class="text-lg font-black text-white uppercase italic tracking-tighter">
                                     {{ $liveMatch->awayClub->name }}</h3>
                             </div>
@@ -244,8 +264,16 @@
                             <div class="flex items-center gap-3 flex-1 justify-end">
                                 <span
                                     class="text-xs md:text-sm font-black uppercase text-slate-900 tracking-tighter italic">{{ $match->homeClub->name }}</span>
-                                <img src="{{ $match->homeClub->logo ? asset('storage/' . $match->homeClub->logo) : asset('images/default-club.png') }}"
-                                    class="w-10 h-10 rounded-full bg-slate-50 p-1.5 shadow-inner">
+                                <img
+    src="{{ 
+        $match->homeClub->logo
+            ? (str_starts_with($match->homeClub->logo, 'http')
+                ? $match->homeClub->logo
+                : asset('storage/' . $match->homeClub->logo))
+            : asset('images/default-club.png')
+    }}"
+    class="w-10 h-10 rounded-full bg-slate-50 p-1.5 shadow-inner">
+
                             </div>
 
                             <div class="px-6 transform group-hover:scale-110 transition-transform duration-500">
@@ -256,15 +284,20 @@
                             </div>
 
                             <div class="flex items-center gap-3 flex-1 justify-start">
-                                <img src="{{ $match->awayClub->logo ? asset('storage/' . $match->awayClub->logo) : asset('images/default-club.png') }}"
-                                    class="w-10 h-10 rounded-full bg-slate-50 p-1.5 shadow-inner">
+                                <img
+    src="{{ 
+        $match->awayClub->logo
+            ? (str_starts_with($match->awayClub->logo, 'http')
+                ? $match->awayClub->logo
+                : asset('storage/' . $match->awayClub->logo))
+            : asset('images/default-club.png')
+    }}"
+    class="w-10 h-10 rounded-full bg-slate-50 p-1.5 shadow-inner">
+
                                 <span
                                     class="text-xs md:text-sm font-black uppercase text-slate-900 tracking-tighter italic">{{ $match->awayClub->name }}</span>
                             </div>
                         </div>
-
-                        <button
-                            class="w-full md:w-auto bg-rose-700 hover:bg-rose-800 text-white px-6 py-2 rounded-lg font-black text-[9px] uppercase tracking-widest transition-all shadow-lg shadow-rose-700/20 active:scale-95">Ringkasan</button>
                     </div>
                 @empty
                     <div

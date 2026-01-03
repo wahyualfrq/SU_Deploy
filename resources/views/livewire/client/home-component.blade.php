@@ -333,79 +333,80 @@
 
                     </div>
 
+@forelse ($finishedMatches as $match)
+    @php
+        // Tentukan status dari sudut pandang HOME
+        $isWin = $match->home_score > $match->away_score;
 
+        $statusLabel = $isWin ? 'M' : 'K';
+        $statusClass = $isWin
+            ? 'bg-green-100 text-green-700'
+            : 'bg-red-100 text-red-700';
+    @endphp
 
-                    <div class="flex flex-col gap-5">
+    <div class="bg-white p-8 rounded-[2rem] shadow-sm hover:shadow-xl hover:shadow-[#E11D48]/10
+                transition-all duration-500 group border border-neutral-100 hover:-translate-y-1"
+        data-aos="fade-up">
 
-                        @php
+        {{-- Header --}}
+        <div class="flex justify-between items-center mb-6">
+            <span class="text-[10px] font-bold text-neutral-400 tracking-widest uppercase">
+                {{ $match->match_date->translatedFormat('d M') }}
+            </span>
 
-                            $matchResults = [
+            <span class="w-8 h-8 flex items-center justify-center rounded-full text-xs font-bold {{ $statusClass }}">
+                {{ $statusLabel }}
+            </span>
+        </div>
 
-                                ['date' => '29 AGT', 'status' => 'M', 'score' => '3 - 1', 'home_team' => 'FC Pro', 'away_team' => 'Bali Utd', 'home_logo' => 'https://images.unsplash.com/photo-1614632537190-23e4b2e69c88?q=80', 'away_logo' => 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?q=80'],
+        {{-- Content --}}
+                            <div class="flex items-center justify-between">
 
-                                ['date' => '22 AGT', 'status' => 'S', 'score' => '2 - 2', 'home_team' => 'Arema FC', 'away_team' => 'FC Pro', 'home_logo' => 'https://images.unsplash.com/photo-1614632537190-23e4b2e69c88?q=80', 'away_logo' => 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?q=80'],
+                                {{-- HOME --}}
+                                <div class="text-center w-1/3">
+                                    <img
+                                        src="{{ $match->homeClub->logo
+                                            ? (str_starts_with($match->homeClub->logo, 'http')
+                                                ? $match->homeClub->logo
+                                                : asset('storage/' . $match->homeClub->logo))
+                                            : asset('images/default-club.png') }}"
+                                        class="w-14 h-14 mx-auto mb-3 object-contain grayscale group-hover:grayscale-0 transition-all">
 
-                            ];
-
-                        @endphp
-
-
-
-                        @foreach ($matchResults as $match)
-
-                            <div class="bg-white p-8 rounded-[2rem] shadow-sm hover:shadow-xl hover:shadow-[#E11D48]/10 transition-all duration-500 group border border-neutral-100 hover:-translate-y-1"
-                                data-aos="fade-up">
-
-                                <div class="flex justify-between items-center mb-6">
-
-                                    <span
-                                        class="text-[10px] font-bold text-neutral-400 tracking-widest uppercase">{{ $match['date'] }}</span>
-
-                                    <span
-                                        class="w-8 h-8 flex items-center justify-center rounded-full text-xs font-bold {{ $match['status'] === 'M' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
-
-                                        {{ $match['status'] }}
-
-                                    </span>
-
+                                    <h4 class="text-xs font-bold uppercase">
+                                        {{ $match->homeClub->name }}
+                                    </h4>
                                 </div>
 
-                                <div class="flex items-center justify-between">
+                                {{-- SCORE --}}
+                                <div class="text-3xl font-black text-neutral-300 group-hover:text-black">
+                                    {{ $match->home_score }} - {{ $match->away_score }}
+                                </div>
 
-                                    <div class="text-center w-1/3">
+                                {{-- AWAY --}}
+                                <div class="text-center w-1/3">
+                                    <img
+                                        src="{{ $match->awayClub->logo
+                                            ? (str_starts_with($match->awayClub->logo, 'http')
+                                                ? $match->awayClub->logo
+                                                : asset('storage/' . $match->awayClub->logo))
+                                            : asset('images/default-club.png') }}"
+                                        class="w-14 h-14 mx-auto mb-3 object-contain grayscale group-hover:grayscale-0 transition-all">
 
-                                        <img src="{{ $match['home_logo'] }}"
-                                            class="w-10 h-10 mx-auto mb-3 grayscale group-hover:grayscale-0 transition-all">
-
-                                        <h4 class="font-bold text-xs uppercase tracking-wider">{{ $match['home_team'] }}
-
-                                        </h4>
-
-                                    </div>
-
-                                    <div
-                                        class="text-3xl font-black tracking-tighter text-neutral-300 group-hover:text-black transition-colors">
-
-                                        {{ $match['score'] }}
-
-                                    </div>
-
-                                    <div class="text-center w-1/3">
-
-                                        <img src="{{ $match['away_logo'] }}"
-                                            class="w-10 h-10 mx-auto mb-3 grayscale group-hover:grayscale-0 transition-all">
-
-                                        <h4 class="font-bold text-xs uppercase tracking-wider">{{ $match['away_team'] }}
-
-                                        </h4>
-
-                                    </div>
-
+                                    <h4 class="text-xs font-bold uppercase">
+                                        {{ $match->awayClub->name }}
+                                    </h4>
                                 </div>
 
                             </div>
+    </div>
+@empty
+    <div class="py-10 text-center text-neutral-400">
+        Belum ada hasil pertandingan
+    </div>
+@endforelse
 
-                        @endforeach
+
+                    <div class="flex flex-col gap-5">
 
                     </div>
 

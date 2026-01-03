@@ -10,6 +10,7 @@ use App\Models\Video;
 
 class HomeComponent extends Component
 {
+    public $finishedMatches;
     public $nextMatch;
     public $upcomingMatches;
     public $latestNews;
@@ -108,6 +109,17 @@ class HomeComponent extends Component
             ])
             ->limit(3)
             ->get();
+
+        /* =========================
+         * HASIL LAGA (MENANG / KALAH SAJA)
+         * ========================= */
+        $this->finishedMatches = \App\Models\MatchGame::with(['homeClub', 'awayClub'])
+            ->where('status', 'finished')
+            ->whereColumn('home_score', '!=', 'away_score') // ⬅️ BUANG SERI
+            ->orderByDesc('match_date')
+            ->limit(2) // ⬅️ CUMA 2
+            ->get();
+
 
         /* =========================
          * BERITA
