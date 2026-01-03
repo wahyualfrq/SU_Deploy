@@ -29,11 +29,24 @@
 
         {{-- KATEGORI --}}
         <div>
-            <label class="text-sm font-semibold">Kategori Tiket</label>
-            <input wire:model="category" type="text" placeholder="Contoh: VIP, Tribune Utara, VVIP" class="mt-1 w-full px-4 py-2 rounded-lg border border-gray-200
-                       focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none">
+            <label class="block text-sm font-semibold text-gray-700">
+                Kategori Tiket
+            </label>
+
+            <select wire:model.defer="category" class="mt-1 w-full px-4 py-2 rounded-lg border border-gray-200
+               focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none">
+
+                <option value="">-- Pilih Kategori Tiket --</option>
+                <option value="VIP">VIP</option>
+                <option value="VVIP">VVIP</option>
+                <option value="REGULER">Reguler</option>
+                <option value="EKONOMI">Ekonomi</option>
+                <option value="TRIBUN_TIMUR">Tribun Timur</option>
+                <option value="TRIBUN_BARAT">Tribun Barat</option>
+            </select>
+
             @error('category')
-                <div class="text-xs text-red-600 mt-1">{{ $message }}</div>
+                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
             @enderror
         </div>
 

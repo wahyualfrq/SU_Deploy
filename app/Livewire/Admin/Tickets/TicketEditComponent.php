@@ -45,7 +45,7 @@ class TicketEditComponent extends Component
     {
         return [
             'match_id' => ['required', 'exists:matches,id'],
-            'category' => ['required', 'string', 'max:255'],
+            'category' => 'required|in:VIP,VVIP,REGULER,EKONOMI,TRIBUN_TIMUR,TRIBUN_BARAT',
             'sales_status' => ['required', 'in:upcoming,available'],
             'price' => ['required', 'integer', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],

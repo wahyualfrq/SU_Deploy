@@ -12,7 +12,7 @@ class Index extends Component
         return view('livewire.admin.players.index', [
             'players' => Player::orderBy('name')->get()
         ])->layout('admin.layouts.app')
-          ->title('Manajemen Tim');
+            ->title('Manajemen Tim');
     }
 
     public function delete($id)

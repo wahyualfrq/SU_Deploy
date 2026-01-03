@@ -19,7 +19,7 @@ class TicketCreateComponent extends Component
     {
         return [
             'match_id' => ['required', 'exists:matches,id'],
-            'category' => ['required', 'string', 'max:100'],
+            'category' => 'required|in:VIP,VVIP,REGULER,EKONOMI,TRIBUN_TIMUR,TRIBUN_BARAT',
             'price' => ['required', 'integer', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],
             'sales_status' => ['required', 'in:upcoming,available'],

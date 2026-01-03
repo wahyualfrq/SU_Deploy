@@ -36,16 +36,21 @@ class Create extends Component
     {
         $data = $this->validate();
 
-        // SIMPAN FOTO LOKAL
         if ($this->photo) {
             $data['photo_url'] = $this->photo->store('players', 'public');
         }
 
+        unset($data['photo']); // WAJIB
+
         Player::create($data);
 
+        // NOTIF
         session()->flash('success', 'Pemain berhasil ditambahkan');
+
+        // REDIRECT
         return redirect()->route('admin.players.index');
     }
+
 
     public function render()
     {

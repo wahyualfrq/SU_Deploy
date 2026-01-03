@@ -1,18 +1,16 @@
 <div class="p-6">
-
     {{-- HEADER --}}
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-bold">Manajemen Tim</h1>
 
         <div class="flex gap-2">
-            <a href="{{ route('admin.players.create') }}"
-               class="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 font-semibold">
-                + Tambah Pemain
-            </a>
-
             <a href="{{ route('admin.players.import') }}"
                class="px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 font-semibold">
                 Import Excel
+            </a>
+                        <a href="{{ route('admin.players.create') }}"
+               class="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 font-semibold">
+                + Tambah Pemain
             </a>
         </div>
     </div>
@@ -42,12 +40,12 @@
                             <td class="py-3 px-2 font-medium">
                                 <div class="flex items-center gap-3">
                                     <img
-                                        src="{{ str_starts_with($player->photo_url, 'http')
-                                            ? $player->photo_url
-                                            : asset('storage/' . $player->photo_url) }}"
-                                        class="w-9 h-9 rounded-full object-cover"
-                                        onerror="this.src='{{ asset('images/default-player.png') }}'">
-
+                                        src="{{ $player->photo_url
+                                            ? (str_starts_with($player->photo_url, 'http')
+                                                ? $player->photo_url
+                                                : asset('storage/' . $player->photo_url))
+                                            : asset('images/default-player.png') }}"
+                                        class="w-9 h-9 rounded-full object-cover">
                                     {{ $player->name }}
                                 </div>
                             </td>
