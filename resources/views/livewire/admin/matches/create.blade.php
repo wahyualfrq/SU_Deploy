@@ -43,12 +43,21 @@
             @error('match_date') <div class="text-xs text-red-600 mt-1">{{ $message }}</div> @enderror
         </div>
 
-        <div>
+            <div>
             <label class="text-sm font-semibold">Stadion</label>
-            <input wire:model="stadium" type="text"
-                class="mt-1 w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none">
-            @error('stadium') <div class="text-xs text-red-600 mt-1">{{ $message }}</div> @enderror
+            <input
+                wire:model="stadium"
+                type="text"
+                readonly
+                class="mt-1 w-full px-4 py-2 rounded-lg border border-gray-200 bg-gray-100
+                    focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none">
+
+            <p class="text-xs text-gray-500 mt-1">
+                Stadion otomatis diambil dari Home Team
+            </p>
         </div>
+
+
 
         <div>
             <label class="block text-sm font-semibold mb-1">Status</label>

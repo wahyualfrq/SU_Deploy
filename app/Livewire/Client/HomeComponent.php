@@ -7,6 +7,8 @@ use App\Models\Ticket;
 use App\Models\News;
 use App\Models\Gallery;
 use App\Models\Video;
+use App\Models\Player;
+
 
 class HomeComponent extends Component
 {
@@ -16,6 +18,7 @@ class HomeComponent extends Component
     public $latestNews;
     public $galleries;
     public $videos;
+    public $players;
 
     public $countdown = [
         'days' => 0,
@@ -128,6 +131,15 @@ class HomeComponent extends Component
             ->latest('published_at')
             ->limit(3)
             ->get();
+
+        /* =========================
+         * PLAYERS (TIM UTAMA)
+         * ========================= */
+        $this->players = Player::where('category', 'Utama')
+            ->orderBy('number')
+            ->limit(4)
+            ->get();
+
 
         return view('livewire.client.home-component')
             ->layout('client.layouts.app');

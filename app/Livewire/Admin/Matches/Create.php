@@ -14,6 +14,20 @@ class Create extends Component
     public $stadium;
     public $status = 'scheduled';
 
+    public function updatedHomeClubId($value)
+    {
+        if (!$value) {
+            $this->stadium = null;
+            return;
+        }
+
+        $club = Club::find($value);
+
+        // SET NAMA STADION KE INPUT
+        $this->stadium = $club?->stadium;
+    }
+
+
     public function save()
     {
         $this->validate([
@@ -39,6 +53,7 @@ class Create extends Component
             ->route('admin.matches.index')
             ->with('success', 'Jadwal pertandingan berhasil ditambahkan');
     }
+
 
     public function render()
     {

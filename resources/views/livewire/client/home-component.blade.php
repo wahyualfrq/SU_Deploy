@@ -817,24 +817,6 @@
 
     {{-- PLAYERS --}}
 
-    @php
-
-        $players = [
-
-            ['name' => 'Ahmad Rizki', 'position' => 'Penyerang', 'number' => 10, 'photo' => 'https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?q=80', 'slug' => 'ahmad-rizki'],
-
-            ['name' => 'Budi Santoso', 'position' => 'Gelandang', 'number' => 7, 'photo' => 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?q=80', 'slug' => 'budi-santoso'],
-
-            ['name' => 'Carlos Silva', 'position' => 'Bek', 'number' => 4, 'photo' => 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80', 'slug' => 'carlos-silva'],
-
-            ['name' => 'Dedi Kurniawan', 'position' => 'Kiper', 'number' => 1, 'photo' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80', 'slug' => 'dedi-kurniawan'],
-
-        ];
-
-    @endphp
-
-
-
     <section class="py-32 bg-neutral-900 relative overflow-hidden text-white">
 
         <div
@@ -893,9 +875,19 @@
                         <div
                             class="relative overflow-hidden rounded-[2.5rem] bg-neutral-800 mb-6 aspect-[3/4] border border-white/5 group-hover:border-[#E11D48]/50 transition-colors">
 
-                            <img src="{{ $player['photo'] }}"
-                                class="w-full h-full object-cover mix-blend-luminosity opacity-80 group-hover:opacity-100 group-hover:mix-blend-normal transition-all duration-700 scale-100 group-hover:scale-110"
-                                onerror="this.src='https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg';">
+                           <img
+    src="{{ $player->photo_url
+        ? (str_starts_with($player->photo_url, 'http')
+            ? $player->photo_url
+            : asset('storage/' . $player->photo_url))
+        : asset('images/default-player.png') }}"
+    class="w-full h-full object-cover
+           mix-blend-luminosity opacity-80
+           group-hover:opacity-100
+           group-hover:mix-blend-normal
+           transition-all duration-700
+           scale-100 group-hover:scale-110">
+
 
                             {{-- Number Badge --}}
 
