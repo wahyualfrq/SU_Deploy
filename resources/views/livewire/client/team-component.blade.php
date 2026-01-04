@@ -1,3 +1,4 @@
+
 @php
 $all_office = [
     // ... data pelatih (sama seperti sebelumnya)
@@ -52,26 +53,25 @@ $playersByPos = [
     'FWD' => collect($all_players)->where('position', 'FW'),
 ];
 
-$playersData = collect($all_players)->mapWithKeys(function($p){
+$playersData = collect($all_players)->mapWithKeys(function ($p) {
     return [
-        $p->id => [
+        'player_' . $p->id => [   // 🔥 prefix string
+            'id'     => $p->id,
             'name'   => $p->name,
             'pos'    => $p->position,
             'number' => $p->number,
             'age'    => $p->age ?? null,
-            'height' => $p->height ?? null,
-            'apps'   => $p->apps ?? 0,
-            'goals'  => $p->goals ?? 0,
-            'cs'     => $p->cs ?? 0,
-            'image' => $p->photo_url 
-                ? (Str::startsWith($p->photo_url, 'http') ? $p->photo_url : asset($p->photo_url))
+            'image'  => $p->photo_url
+                ? (Str::startsWith($p->photo_url, 'http')
+                    ? $p->photo_url
+                    : asset($p->photo_url))
                 : asset('images/blankprofile.png'),
-
         ]
     ];
-});
-@endphp
+})->toArray();
 
+
+@endphp
 <div>
     <section class="relative py-28 bg-white overflow-hidden">
     
@@ -352,7 +352,7 @@ $playersData = collect($all_players)->mapWithKeys(function($p){
         </div>
     </section>
 
-    <div id="player-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div id="player-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-[3rem] max-w-4xl w-full overflow-hidden shadow-2xl relative">
             <button onclick="closePlayerModal()" class="absolute top-6 right-6 w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-rose-600 hover:text-white transition-all z-10">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -366,6 +366,7 @@ $playersData = collect($all_players)->mapWithKeys(function($p){
 </div>
 
 <script>
+     window.playersData = @json($playersData);
     // INISIALISASI AOS
     AOS.init({
         once: true, // Animasi hanya berjalan sekali saat scroll ke bawah
@@ -373,7 +374,6 @@ $playersData = collect($all_players)->mapWithKeys(function($p){
         duration: 800, // Durasi standar
     });
 
-    const playersData = @json($playersData);
     
     function showSection(sectionId) {
         document.querySelectorAll('.team-section').forEach(section => section.classList.add('hidden'));
@@ -396,44 +396,102 @@ $playersData = collect($all_players)->mapWithKeys(function($p){
         }
     }
 
-    function showPlayerModal(playerId) {
-        const modal = document.getElementById('player-modal');
-        const contentDiv = document.getElementById('modal-content');
-        const data = playersData[playerId] || { name: 'Pemain Tidak Ditemukan', pos: '-', number: '-' };
+const fallback = {
+    id: null,
+    name: 'Pemain Tidak Ditemukan',
+    pos: '-',
+    number: '-',
+    age: '-',
+    image: ''
+};
 
-        contentDiv.innerHTML = `
-            <div class="flex flex-col md:flex-row min-h-[520px]">
-                <div class="w-full md:w-5/12 bg-gray-100 relative min-h-[520px]">
-                    <img src="${data.image}" class="absolute inset-0 w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div class="absolute bottom-10 left-10 text-white">
-                        <div class="text-6xl font-black font-oswald text-rose-500 leading-none mb-2">${data.number}</div>
-                        <div class="text-sm font-bold uppercase tracking-widest opacity-80">Nomor Punggung</div>
+function showPlayerModal(playerId) {
+    console.log('CLICKED ID:', playerId);
+    console.log('DATA:', window.playersData['player_' + playerId]);
+
+    const modal = document.getElementById('player-modal');
+    const contentDiv = document.getElementById('modal-content');
+
+    const data = window.playersData['player_' + playerId] || fallback;
+
+    contentDiv.innerHTML = `
+  <div class="flex flex-col md:flex-row min-h-[520px] bg-white rounded-3xl overflow-hidden shadow-2xl">
+    
+    <div class="w-full md:w-1/2 relative min-h-[400px] md:min-h-full group">
+        <img src="${data.image}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+        
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-90"></div>
+        
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-rose-500 to-transparent"></div>
+
+        <div class="absolute bottom-6 left-6 md:bottom-10 md:left-10 z-10">
+             <div class="flex items-center gap-3">
+                <div class="h-12 w-1 bg-rose-500"></div>
+                <div class="text-white">
+                    <p class="text-rose-400 text-xs font-bold uppercase tracking-[0.2em] mb-1">Squad Number</p>
+                    <div class="text-6xl md:text-7xl font-black font-oswald leading-none tracking-tighter shadow-black drop-shadow-lg">
+                        ${data.number ?? '-'}
                     </div>
                 </div>
-                
-                <div class="w-full md:w-7/12 p-12">
-                    <div class="mb-12">
-                        <span class="inline-block py-1 px-3 rounded bg-rose-50 text-rose-600 text-[10px] font-bold uppercase tracking-widest mb-3 border border-rose-100">${data.pos}</span>
-                        <h2 class="text-5xl font-black text-gray-900 font-oswald uppercase leading-none">${data.name}</h2>
-                    </div>
-                    <div class="grid grid-cols-1 gap-6">
-                        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-                            <span class="block text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2">Usia</span>
-                            <span class="block text-4xl font-black text-gray-900 font-oswald">
-                                ${data.age || '-'} <span class="text-lg text-gray-400 font-medium">Tahun</span>
-                            </span>
+             </div>
+        </div>
+    </div>
+
+    <div class="w-full md:w-1/2 relative bg-white p-8 md:p-12 flex flex-col justify-center overflow-hidden">
+        
+        <div class="absolute -right-10 -bottom-20 text-[200px] leading-none font-black font-oswald text-gray-100 select-none pointer-events-none opacity-50 z-0">
+            ${data.number ?? ''}
+        </div>
+
+        <div class="relative z-10">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="px-4 py-1.5 bg-rose-50 text-rose-600 text-xs font-extrabold uppercase tracking-widest rounded-full border border-rose-100">
+                    ${data.pos}
+                </span>
+                <div class="h-px flex-grow bg-gray-200"></div>
+            </div>
+
+            <h2 class="text-5xl md:text-6xl font-black font-oswald uppercase text-gray-900 leading-[0.9] tracking-tight mb-8">
+                ${data.name}
+            </h2>
+
+            <div class="w-full">
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-lg shadow-gray-100 hover:border-rose-200 transition-colors group w-full">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="text-xs uppercase tracking-[0.2em] font-bold text-gray-400 group-hover:text-rose-500 transition-colors">
+                            Usia Pemain
                         </div>
+                        <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                    
+                    <div class="flex items-baseline gap-2">
+                        <div class="text-5xl font-black font-oswald text-gray-800 leading-none">
+                            ${data.age ?? '-'}
+                        </div>
+                        <span class="text-lg font-semibold text-gray-400">Tahun</span>
                     </div>
                 </div>
             </div>
-        `;
-        modal.classList.remove('hidden');
-    }
+            
+        </div>
+        
+    </div>
+</div>
+`;
+
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+
 
     function closePlayerModal() {
-        document.getElementById('player-modal').classList.add('hidden');
-    }
+    const modal = document.getElementById('player-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
 
     function filterByPosition(position) {
         document.querySelectorAll('.position-filter').forEach(btn => {

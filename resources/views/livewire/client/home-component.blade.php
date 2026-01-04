@@ -55,28 +55,17 @@
 
                     {{-- Dynamic Headline --}}
 
-                    <h1
-                        class="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-[0.95] tracking-tight mb-6 uppercase drop-shadow-lg">
-
-                        @if($nextMatch)
-
-                            BERSATU KITA <br>BERSAING
-
-                            <br>
-
-                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#E11D48] to-white">
-
-                                KITA MENANG
-
-                            </span>
-
-                        @else
-
-                            Musim<br>Segera Dimulai...
-
-                        @endif
-
-                    </h1>
+                    <h1 class="text-4xl md:text-5xl lg:text-7xl font-black text-white leading-none tracking-tight mb-6 uppercase drop-shadow-lg">
+    @if($nextMatch)
+        <span class="block">LASKAR WONG KITO</span>
+        
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#E11D48] to-white italic">
+            NYALI JUARA!
+        </span>
+    @else
+        Musim<br>Segera Dimulai...
+    @endif
+</h1>
 
 
 
@@ -753,18 +742,26 @@
 
                             <div class="absolute inset-0 flex items-center justify-center">
 
-                                <div
-                                    class="w-16 h-16 bg-[#E11D48] rounded-full flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                <!-- YouTube Icon Only -->
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    class="w-16 h-16 text-[#FF0000]
+                                        drop-shadow-[0_8px_20px_rgba(0,0,0,0.6)]
+                                        group-hover:scale-110
+                                        transition-transform duration-300"
+                                    fill="currentColor">
 
-                                    <svg class="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <!-- YouTube Body -->
+                                    <path d="M23.498 6.186a2.958 2.958 0 0 0-2.079-2.093C19.597 3.5 12 3.5 12 3.5s-7.597 0-9.419.593A2.958 2.958 0 0 0 .502 6.186C0 8.01 0 12 0 12s0 3.99.502 5.814a2.958 2.958 0 0 0 2.079 2.093C4.403 20.5 12 20.5 12 20.5s7.597 0 9.419-.593a2.958 2.958 0 0 0 2.079-2.093C24 15.99 24 12 24 12s0-3.99-.502-5.814z"/>
 
-                                        <path d="M8 5v14l11-7z" />
+                                    <!-- Play Triangle -->
+                                    <path d="M9.75 15.02V8.98L15.5 12z" fill="white"/>
 
-                                    </svg>
-
-                                </div>
+                                </svg>
 
                             </div>
+
+
 
                         </div>
 
@@ -848,7 +845,7 @@
 
                 </div>
 
-                <a href="team.html"
+                <a href="{{ route('team') }}"
                     class="inline-flex items-center gap-2 border-b border-[#E11D48] pb-1 font-bold uppercase tracking-widest text-xs hover:text-[#E11D48] transition-colors">
 
                     Lihat Skuad Lengkap
