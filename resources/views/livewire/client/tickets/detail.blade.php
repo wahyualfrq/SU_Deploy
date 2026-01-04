@@ -109,17 +109,20 @@
 
                             {{-- HOME CLUB --}}
                             <div class="flex flex-col items-center text-center w-1/3">
-                                <img
-                                    src="{{ $ticket->home_club_logo
-                                        ? (str_starts_with($ticket->home_club_logo, 'http')
-                                            ? $ticket->home_club_logo
-                                            : asset('storage/' . $ticket->home_club_logo))
-                                        : asset('images/default-club.png') }}"
-                                    alt="{{ $ticket->home_club_name }}"
-                                    class="w-20 h-20 object-contain mb-3">
+                                <div wire:ignore>
+                                    <img
+                                        src="{{ $ticket->home_club_logo
+                                            ? (str_starts_with($ticket->home_club_logo, 'http')
+                                                ? $ticket->home_club_logo
+                                                : asset('storage/' . $ticket->home_club_logo))
+                                            : asset('images/default-club.png') }}"
+                                        alt="{{ $ticket->match->homeClub->name }}"
+                                        class="w-20 h-20 object-contain mb-3">
+                                </div>
+
 
                                 <span class="text-xl sm:text-2xl font-black uppercase text-rose-600">
-                                    {{ $ticket->home_club_name }}
+                                    {{ $ticket->match->homeClub->name }}
                                 </span>
                             </div>
 
@@ -132,18 +135,20 @@
 
                             {{-- AWAY CLUB --}}
                             <div class="flex flex-col items-center text-center w-1/3">
-                                <img
-                                    src="{{ $ticket->away_club_logo
-                                        ? (str_starts_with($ticket->away_club_logo, 'http')
-                                            ? $ticket->away_club_logo
-                                            : asset('storage/' . $ticket->away_club_logo))
-                                        : asset('images/default-club.png') }}"
-                                    alt="{{ $ticket->away_club_name }}"
-                                    class="w-20 h-20 object-contain mb-3">
-
-                                <span class="text-xl sm:text-2xl font-black uppercase text-slate-900">
-                                    {{ $ticket->away_club_name }}
+                                <div wire:ignore>
+                                    <img
+                                        src="{{ $ticket->away_club_logo
+                                            ? (str_starts_with($ticket->away_club_logo, 'http')
+                                                ? $ticket->away_club_logo
+                                                : asset('storage/' . $ticket->away_club_logo))
+                                            : asset('images/default-club.png') }}"
+                                        alt="{{ $ticket->match->awayClub->name }}"
+                                        class="w-20 h-20 object-contain mb-3">
+                                </div>
+                                                            <span class="text-xl sm:text-2xl font-black uppercase text-slate-900">
+                                    {{ $ticket->match->awayClub->name }}
                                 </span>
+
                             </div>
 
                         </div>
@@ -253,72 +258,118 @@
             </div>
 
             {{-- SECTION 3: TRUST INDICATORS (Untuk mengisi kekosongan di bawah card) --}}
-           <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
 
-    <!-- OFFICIAL PARTNER -->
-    <div class="flex items-center justify-center gap-3 p-4 rounded-2xl 
-                bg-rose-50 border border-rose-100">
-        <svg class="w-5 h-5 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        <span class="text-xs font-bold text-rose-700 uppercase tracking-wide">
-            Mitra Resmi
-        </span>
-    </div>
-
-    <!-- SECURE PAYMENT -->
-    <div class="flex items-center justify-center gap-3 p-4 rounded-2xl 
-                bg-emerald-50 border border-emerald-100">
-        <svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-        </svg>
-        <span class="text-xs font-bold text-emerald-700 uppercase tracking-wide">
-            Pembayaran Aman
-        </span>
-    </div>
-
-    <!-- INSTANT PROCESS -->
-    <div class="flex items-center justify-center gap-3 p-4 rounded-2xl 
-                bg-indigo-50 border border-indigo-100">
-        <svg class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"/>
-        </svg>
-        <span class="text-xs font-bold text-indigo-700 uppercase tracking-wide">
-            Proses Instan
-        </span>
-    </div>
-
-</div>
-
-
-        </div>
-    </div>
-
-
-    {{-- MODAL KONFIRMASI (Kode asli, hanya sedikit polish di backdrop) --}}
-    @if($confirmingTicketId)
-        <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            
-            {{-- Backdrop dengan blur lebih kuat --}}
-            <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-md transition-opacity" wire:click="$set('confirmingTicketId', null)"></div>
-
-            {{-- Modal Content --}}
-            <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 animate-slideDown ring-1 ring-white/20">
-
-                <div class="text-center mb-8">
-                    <div class="mx-auto w-16 h-16 bg-rose-50 rounded-full flex items-center justify-center mb-6 ring-4 ring-rose-50">
-                        <svg class="w-8 h-8 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    <!-- OFFICIAL PARTNER -->
+                    <div class="flex items-center justify-center gap-3 p-4 rounded-2xl 
+                                bg-rose-50 border border-rose-100">
+                        <svg class="w-5 h-5 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
+                        <span class="text-xs font-bold text-rose-700 uppercase tracking-wide">
+                            Mitra Resmi
+                        </span>
                     </div>
-                    
-                    <h3 class="text-2xl font-black text-slate-900 mb-2">Checkout</h3>
-                    <p class="text-slate-500 text-sm">
-                        Konfirmasi pembelian tiket untuk <br>
-                        <strong class="text-rose-600">{{ $ticket->match->home_team }} vs {{ $ticket->match->away_team }}</strong>
+
+                    <!-- SECURE PAYMENT -->
+                    <div class="flex items-center justify-center gap-3 p-4 rounded-2xl 
+                                bg-emerald-50 border border-emerald-100">
+                        <svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                        <span class="text-xs font-bold text-emerald-700 uppercase tracking-wide">
+                            Pembayaran Aman
+                        </span>
+                    </div>
+
+                    <!-- INSTANT PROCESS -->
+                    <div class="flex items-center justify-center gap-3 p-4 rounded-2xl 
+                                bg-indigo-50 border border-indigo-100">
+                        <svg class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        <span class="text-xs font-bold text-indigo-700 uppercase tracking-wide">
+                            Proses Instan
+                        </span>
+                    </div>
+
+                </div>
+
+
+                        </div>
+                    </div>
+
+
+                    {{-- MODAL KONFIRMASI (Kode asli, hanya sedikit polish di backdrop) --}}
+                    @if($confirmingTicketId)
+                        <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                            
+                            {{-- Backdrop dengan blur lebih kuat --}}
+                            <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-md transition-opacity" wire:click="$set('confirmingTicketId', null)"></div>
+
+                            {{-- Modal Content --}}
+                            <div
+                    wire:key="checkout-modal-{{ $ticket->id }}-{{ $confirmingTicketId }}"
+                    class="relative bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 animate-slideDown ring-1 ring-white/20">
+
+
+                                <div class="text-center mb-8">
+                                    <div class="mx-auto w-16 h-16 bg-rose-50 rounded-full flex items-center justify-center mb-6 ring-4 ring-rose-50">
+                                        <svg class="w-8 h-8 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                        </svg>
+                                    </div>
+                                    
+                                                    <h3 class="text-2xl font-black text-slate-900 mb-2">Checkout</h3>
+                                                    {{-- CLUB PREVIEW --}}
+                                <div class="flex items-center justify-center gap-6 my-6">
+
+                                    {{-- HOME CLUB --}}
+                                    <div class="flex flex-col items-center text-center w-1/3">
+                                        <img
+                    src="{{ $ticket->match->homeClub->logo
+                        ? (str_starts_with($ticket->match->homeClub->logo, 'http')
+                            ? $ticket->match->homeClub->logo
+                            : asset('storage/' . $ticket->match->homeClub->logo))
+                        : asset('images/default-club.png') }}"
+                    alt="{{ $ticket->match->homeClub->name }}"
+                    class="w-14 h-14 object-contain mb-2">
+
+                <span class="text-xs font-bold uppercase text-slate-700 leading-tight">
+                    {{ $ticket->match->homeClub->name }}
+                </span>
+
+                                    </div>
+
+                                    {{-- VS --}}
+                                    <div class="text-sm font-black italic text-slate-400">
+                                        VS
+                                    </div>
+
+                                    {{-- AWAY CLUB --}}
+                                    <div class="flex flex-col items-center text-center w-1/3">
+                                    <img
+                    src="{{ $ticket->match->awayClub->logo
+                        ? (str_starts_with($ticket->match->awayClub->logo, 'http')
+                            ? $ticket->match->awayClub->logo
+                            : asset('storage/' . $ticket->match->awayClub->logo))
+                        : asset('images/default-club.png') }}"
+                    alt="{{ $ticket->match->awayClub->name }}"
+                    class="w-14 h-14 object-contain mb-2">
+
+                <span class="text-xs font-bold uppercase text-slate-700 leading-tight">
+                    {{ $ticket->match->awayClub->name }}
+                </span>
+
+                    </div>
+
+                </div>
+
+                    <p class="text-slate-900 font-bold">
+                        Konfirmasi pembelian tiket
                     </p>
                 </div>
 
