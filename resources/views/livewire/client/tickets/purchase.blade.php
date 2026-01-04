@@ -117,7 +117,7 @@
                                     </div>
                                     
                                    {{-- Status Badge --}}
-                                        @if($isSoldOut)
+                                        @if($ticket->stock < 1)
                                             <div class="px-2 py-1 bg-slate-100 border border-slate-200 rounded
                                                         text-[10px] font-bold text-slate-500 uppercase tracking-wide">
                                                 Tiket Habis

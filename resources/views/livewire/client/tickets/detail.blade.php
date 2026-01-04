@@ -73,25 +73,34 @@
                                 <span>Tiket Resmi</span>
                             </div>
                             
-                            @if($ticket->sales_status === 'available')
-                                <div class="inline-flex items-center gap-1.5 text-emerald-600 font-bold text-sm bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
-                                    <span class="relative flex h-2 w-2">
-                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                                    </span>
-                                    Tersedia
-                                </div>
-                            @elseif($ticket->sales_status === 'upcoming')
-                                <div class="inline-flex items-center gap-1.5 text-amber-600 font-bold text-sm bg-amber-50 px-3 py-1 rounded-full border border-amber-100">
-                                    <span class="h-2 w-2 rounded-full bg-amber-500"></span>
-                                    Segera Tersedia
-                                </div>
-                            @else
-                                <div class="inline-flex items-center gap-1.5 text-slate-500 font-bold text-sm bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
-                                    <span class="h-2 w-2 rounded-full bg-slate-400"></span>
-                                    Tiket Habis
-                                </div>
-                            @endif
+                          @if($ticket->stock < 1)
+                            {{-- SOLD OUT --}}
+                            <div class="inline-flex items-center gap-1.5 text-slate-500 font-bold text-sm
+                                        bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
+                                <span class="h-2 w-2 rounded-full bg-slate-400"></span>
+                                Tiket Habis
+                            </div>
+
+                        @elseif($ticket->sales_status === 'upcoming')
+                            {{-- UPCOMING --}}
+                            <div class="inline-flex items-center gap-1.5 text-amber-600 font-bold text-sm
+                                        bg-amber-50 px-3 py-1 rounded-full border border-amber-100">
+                                <span class="h-2 w-2 rounded-full bg-amber-500"></span>
+                                Segera Tersedia
+                            </div>
+
+                        @else
+                            {{-- AVAILABLE --}}
+                            <div class="inline-flex items-center gap-1.5 text-emerald-600 font-bold text-sm
+                                        bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
+                                <span class="relative flex h-2 w-2">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                </span>
+                                Tersedia
+                            </div>
+                        @endif
+
                         </div>
 
                         {{-- Judul Pertandingan --}}
