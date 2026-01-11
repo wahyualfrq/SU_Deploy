@@ -5,7 +5,8 @@ namespace App\Livewire\Admin\News;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\News;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class Edit extends Component
 {
@@ -14,66 +15,67 @@ class Edit extends Component
     public News $news;
 
     public $title;
-    public $author;
-    public $image;          // gambar BARU (opsional)
+    public $image;
     public $content;
     public $published_at;
     public $is_visible = true;
-    public $oldImage;       // simpan gambar lama
 
     protected function rules()
     {
         return [
             'title' => 'required|string|max:255',
-            'author' => 'nullable|string|max:100',
-            'image' => 'nullable|image|max:2048', // 👈 TIDAK WAJIB
-            'content' => 'required|string',
-            'published_at' => 'required|date',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'content' => 'required|string|min:20',
+            'published_at' => 'nullable|date',
             'is_visible' => 'boolean',
         ];
     }
 
-    /**
-     * 🔥 INIT DATA DARI DATABASE
-     */
     public function mount(News $news)
     {
         $this->news = $news;
 
         $this->title = $news->title;
-        $this->author = $news->author;
         $this->content = $news->content;
-        $this->published_at = $news->published_at;
+        $this->published_at = optional($news->published_at)->format('Y-m-d\TH:i');
         $this->is_visible = $news->is_visible;
-        $this->oldImage = $news->image_path;
     }
 
     public function update()
     {
         $this->validate();
 
-        // jika upload gambar baru
+        $imagePath = $this->news->image_path;
+        $publicId  = $this->news->image_public_id;
+
         if ($this->image) {
-            // hapus gambar lama
-            if ($this->oldImage && Storage::disk('public')->exists($this->oldImage)) {
-                Storage::disk('public')->delete($this->oldImage);
+
+            if ($publicId) {
+                Cloudinary::destroy($publicId);
             }
 
-            $imagePath = $this->image->store('news', 'public');
-        } else {
-            $imagePath = $this->oldImage;
+            $upload = Cloudinary::upload(
+                $this->image->getRealPath(),
+                ['folder' => 'news']
+            );
+
+            $imagePath = $upload->getSecurePath();
+            $publicId  = $upload->getPublicId();
         }
 
         $this->news->update([
             'title' => $this->title,
-            'author' => $this->author,
+            'slug' => Str::slug($this->title),
+            'author' => auth()->user()->name,
             'image_path' => $imagePath,
+            'image_public_id' => $publicId,
             'content' => $this->content,
             'published_at' => $this->published_at,
             'is_visible' => $this->is_visible,
         ]);
 
-        return redirect()->route('admin.news.index')
+        return redirect()
+            ->route('admin.news.index')
             ->with('success', 'Berita berhasil diperbarui');
     }
 

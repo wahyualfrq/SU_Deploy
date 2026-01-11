@@ -264,7 +264,7 @@
 
                             <div class="relative overflow-hidden h-64 md:h-auto">
 
-                                <img src="{{ asset('storage/' . $featured->image_path) }}"
+                                <img src="{{ $featured->image_url }}"
                                     class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
 
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:hidden">
@@ -359,7 +359,7 @@
 
                                     <div class="relative aspect-[16/10] overflow-hidden">
 
-                                        <img src="{{ asset('storage/' . $item->image_path) }}"
+                                        <img src="{{ $item->image_url }}"
                                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
 
                                         <div
@@ -490,7 +490,7 @@
 
 
 
-                                    <img src="{{ asset('storage/' . $item->image_path) }}" class="w-16 h-16 rounded-lg object-cover shadow-sm
+                                    <img src="{{ $item->image_url }}" class="w-16 h-16 rounded-lg object-cover shadow-sm
 
                                     group-hover:shadow-md transition-shadow">
 

@@ -11,13 +11,6 @@
             @error('title') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>
 
-        {{-- Penulis --}}
-        <div>
-            <label class="font-semibold">Penulis</label>
-            <input type="text" wire:model="author"
-                class="w-full mt-2 rounded-lg border-gray-300">
-        </div>
-
         {{-- Gambar --}}
         <div>
             <label class="font-semibold">Gambar / Thumbnail</label>
@@ -31,8 +24,8 @@
                 @if ($image)
                     <img src="{{ $image->temporaryUrl() }}"
                         class="h-48 mx-auto rounded-lg object-cover">
-                @elseif ($oldImage)
-                    <img src="{{ asset('storage/'.$oldImage) }}"
+                @elseif ($news->image_path)
+                    <img src="{{ $news->image_path }}"
                         class="h-48 mx-auto rounded-lg object-cover">
                     <p class="text-sm text-gray-500 mt-2">Gambar saat ini</p>
                 @else
@@ -48,6 +41,7 @@
             <label class="font-semibold">Isi Berita</label>
             <textarea wire:model="content" rows="6"
                 class="w-full mt-2 rounded-lg border-gray-300"></textarea>
+            @error('content') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>
 
         {{-- Publish --}}
@@ -55,6 +49,7 @@
             <label class="font-semibold">Tanggal & Waktu Publikasi</label>
             <input type="datetime-local" wire:model="published_at"
                 class="w-full mt-2 rounded-lg border-gray-300">
+            @error('published_at') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>
 
         {{-- Visible --}}

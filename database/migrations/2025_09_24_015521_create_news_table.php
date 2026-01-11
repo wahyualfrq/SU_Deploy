@@ -11,16 +11,18 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('news', function (Blueprint $table) {
-            $table->id(); // ID unik berita
-            $table->string('title'); // Judul berita
-            $table->text('content'); // Isi lengkap berita
-            $table->string('image_path'); // gambar berita
+            $table->id();
+            $table->string('title');
             $table->string('slug')->unique();
-            $table->dateTime('published_at'); // Tanggal dan waktu publikasi
-            $table->string('author')->nullable(); // Nama penulis (opsional)
-            $table->boolean('is_visible')->default(true); // Status tampil di frontend
-            $table->timestamps(); // created_at dan updated_at
+            $table->text('content');
+            $table->string('image_path');
+            $table->string('image_public_id')->nullable();
+            $table->dateTime('published_at')->nullable();
+            $table->string('author')->nullable();
+            $table->boolean('is_visible')->default(true);
+            $table->timestamps();
         });
+
     }
 
     /**

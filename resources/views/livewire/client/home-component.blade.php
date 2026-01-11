@@ -435,7 +435,7 @@
 
                                     <div class="w-20 h-20 shrink-0 overflow-hidden rounded-2xl bg-neutral-100">
 
-                                        <img src="{{ asset('storage/' . $news->image_path) }}"
+                                        <img src="{{ $news->image_url }}"
                                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0">
 
                                     </div>

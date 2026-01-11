@@ -50,7 +50,7 @@
 
                         {{-- PUBLISHED AT --}}
                         <td class="px-6 py-4 text-gray-600">
-                            {{ \Carbon\Carbon::parse($item->published_at)->format('d M Y H:i') }}
+                            {{ optional($item->published_at)->format('d M Y H:i') ?? '-' }}
                         </td>
 
                         {{-- STATUS --}}

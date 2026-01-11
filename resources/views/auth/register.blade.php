@@ -35,7 +35,7 @@
         <div class="text-center mb-6">
             <div class="relative inline-block group">
                 <div class="absolute inset-0 bg-red-600 blur-xl opacity-20 group-hover:opacity-50 transition-opacity duration-500 rounded-full"></div>
-                <img src="{{ asset('images/favicon.png') }}" alt="Logo Sumsel United"
+                <img src="{{ setting('favicon') }}" alt="Logo Sumsel United"
                     class="relative w-16 h-16 mx-auto mb-3 drop-shadow-lg grayscale group-hover:grayscale-0 transition-all duration-500">
             </div>
             <h1 class="text-4xl font-sport font-bold tracking-wider italic uppercase text-white">

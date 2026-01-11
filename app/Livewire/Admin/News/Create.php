@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\News;
 use Illuminate\Support\Str;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class Create extends Component
 {
@@ -21,12 +22,12 @@ class Create extends Component
     protected function rules()
     {
         return [
-            'title'        => 'required|string|max:255',
-            'author'       => 'nullable|string|max:100',
-            'image'        => 'required|image|max:2048',
-            'content'      => 'required|string|min:20',
+            'title' => 'required|string|max:255',
+            'author' => 'nullable|string|max:100',
+            'image' => 'required|image|max:2048',
+            'content' => 'required|string|min:20',
             'published_at' => 'nullable|date',
-            'is_visible'   => 'boolean',
+            'is_visible' => 'boolean',
         ];
     }
 
@@ -47,18 +48,28 @@ class Create extends Component
      */
     public function save()
     {
-        $this->validate();
+        $this->validate([
+            'title' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'content' => 'required|string|min:20',
+            'published_at' => 'nullable|date',
+            'is_visible' => 'boolean',
+        ]);
 
-        $imagePath = $this->image->store('news', 'public');
+        $upload = Cloudinary::upload(
+            $this->image->getRealPath(),
+            ['folder' => 'news']
+        );
 
         News::create([
-            'title'        => $this->title,
-            'slug'         => Str::slug($this->title),
-            'author'       => $this->author,
-            'image_path'   => $imagePath,
-            'content'      => $this->content,
-            'published_at' => $this->published_at ?? now(),
-            'is_visible'   => $this->is_visible,
+            'title' => $this->title,
+            'slug' => Str::slug($this->title),
+            'author' => auth()->user()->name,
+            'image_path' => $upload->getSecurePath(),
+            'image_public_id' => $upload->getPublicId(),
+            'content' => $this->content,
+            'published_at' => $this->published_at,
+            'is_visible' => $this->is_visible,
         ]);
 
         return redirect()

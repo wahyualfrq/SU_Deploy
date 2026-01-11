@@ -4,22 +4,28 @@ namespace App\Livewire\Admin\News;
 
 use Livewire\Component;
 use App\Models\News;
-use App\Models\Gallery;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class Index extends Component
 {
     public function delete($id)
     {
-        News::findOrFail($id)->delete();
+        $news = News::findOrFail($id);
+
+        if ($news->image_public_id) {
+            Cloudinary::destroy($news->image_public_id);
+        }
+
+        $news->delete();
+
+        session()->flash('success', 'Berita berhasil dihapus');
     }
+
     public function render()
     {
         return view('livewire.admin.news.index', [
             'news' => News::latest()->get()
-        ])
-            ->layout('admin.layouts.app')
-            ->title('Manajemen Berita');
+        ])->layout('admin.layouts.app')
+          ->title('Manajemen Berita');
     }
-
-
 }

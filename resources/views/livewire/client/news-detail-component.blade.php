@@ -29,7 +29,7 @@
 
         {{-- Featured Image: Aspect Ratio & Modern Shadow --}}
         <div class="relative rounded-3xl overflow-hidden shadow-2xl shadow-gray-200 mb-12 ring-1 ring-black/5">
-            <img src="{{ asset('storage/' . $news->image_path) }}" 
+            <img src="{{ $news->image_url }}" 
                  class="w-full aspect-video object-cover transform hover:scale-105 transition duration-700 ease-in-out"
                  alt="{{ $news->title }}">
         </div>
@@ -60,7 +60,7 @@
                             {{-- Card Image --}}
                             <div class="relative overflow-hidden rounded-2xl shadow-sm mb-4">
                                 <div class="absolute inset-0 bg-gray-900/10 group-hover:bg-transparent transition z-10"></div>
-                                <img src="{{ asset('storage/' . $item->image_path) }}"
+                                <img src="{{ $item->image_url }}"
                                      class="w-full aspect-[4/3] object-cover transform group-hover:scale-110 transition duration-500">
                             </div>
 

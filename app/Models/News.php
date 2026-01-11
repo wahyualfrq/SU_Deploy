@@ -30,6 +30,11 @@ class News extends Model
             }
         });
     }
+    public function getImageUrlAttribute()
+    {
+        return $this->image_path;
+    }
+
 
     public function scopeVisible($query)
     {
