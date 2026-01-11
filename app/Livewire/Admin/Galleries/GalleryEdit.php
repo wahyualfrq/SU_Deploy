@@ -3,59 +3,57 @@
 namespace App\Livewire\Admin\Galleries;
 
 use Livewire\Component;
-use Livewire\WithFileUploads; // ✅ WAJIB
+use Livewire\WithFileUploads;
 use App\Models\Gallery;
-use App\Models\GalleryPhoto;
-use Illuminate\Support\Facades\Storage;
 
 class GalleryEdit extends Component
 {
     use WithFileUploads;
 
     public Gallery $gallery;
-    public $photos = [];
+    public string $title;
+    public $cover_image;
 
     protected $rules = [
-        'photos.*' => 'image|max:2048',
+        'title' => 'required|string|max:255',
+        'cover_image' => 'nullable|image|max:2048',
     ];
 
-    // ⬇️ WAJIB ADA kalau pakai route model binding
+
     public function mount(Gallery $gallery)
     {
         $this->gallery = $gallery;
+        $this->title = $gallery->title;
     }
 
-    public function uploadPhotos()
+    public function update()
     {
         $this->validate();
 
-        foreach ($this->photos as $photo) {
-            $path = $photo->store('galleries', 'public');
+        $data = [
+            'title' => $this->title,
+        ];
 
-            $this->gallery->photos()->create([
-                'image_path' => $path,
-            ]);
+        if ($this->cover_image) {
+            $upload = cloudinary()->uploadApi()->upload(
+                $this->cover_image->getRealPath(),
+                ['folder' => 'gallery/covers']
+            );
+
+            $data['cover_image'] = $upload['secure_url'];
         }
 
-        $this->photos = [];
-    }
+        $this->gallery->update($data);
 
-    public function deletePhoto($id)
-    {
-        $photo = GalleryPhoto::where('gallery_id', $this->gallery->id)->findOrFail($id);
-
-        if ($photo->image_path && Storage::disk('public')->exists($photo->image_path)) {
-            Storage::disk('public')->delete($photo->image_path);
-        }
-
-        $photo->delete();
+        return redirect()
+            ->route('admin.gallery.index')
+            ->with('success', 'Galeri berhasil diperbarui');
     }
 
 
     public function render()
     {
-        return view('livewire.admin.galleries.edit', [
-            'items' => $this->gallery->photos,
-        ])->layout('admin.layouts.app');
+        return view('livewire.admin.gallery.edit')
+            ->layout('admin.layouts.app');
     }
 }

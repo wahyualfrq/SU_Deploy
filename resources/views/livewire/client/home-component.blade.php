@@ -611,7 +611,7 @@
                         class="group relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-neutral-100 shadow-lg"
                         data-aos="zoom-in" data-aos-delay="{{ $loop->index * 50 }}">
 
-                        <img src="{{ asset('storage/' . $gallery->cover_image) }}"
+                        <img src="{{ $gallery->cover_image_url}}"
                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale hover:grayscale-0"
                             onerror="this.src='https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg';">
 

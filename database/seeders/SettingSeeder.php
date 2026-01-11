@@ -15,7 +15,7 @@ class SettingSeeder extends Seeder
         );
         Setting::updateOrCreate(
             ['key' => 'favicon'],
-            ['value' => 'https://res.cloudinary.com/ddlgu8xrc/image/upload/v123456/sumsel-united/favicon.png']
+            ['value' => 'https://res.cloudinary.com/ddlgu8xrc/image/upload/v1768129445/sumsel-united/zqouyjrab6f0mqigals2.png']
         );
     }
 }

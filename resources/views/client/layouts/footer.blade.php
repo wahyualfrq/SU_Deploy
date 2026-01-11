@@ -10,7 +10,7 @@
             <div class="space-y-6">
                 <div class="flex items-center space-x-3">
                     <div class="p-2 bg-neutral-900 rounded-xl border border-neutral-800 shadow-lg shadow-black/50">
-                        <img src="{{ asset('images/favicon.png') }}" alt="Sumsel United Logo"
+                        <img src="{{ setting('favicon') }}" alt="Sumsel United Logo"
                             class="h-10 w-10 object-contain">
                     </div>
                     <div>

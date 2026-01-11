@@ -11,6 +11,7 @@ class Gallery extends Model
         'title',
         'slug',
         'cover_image',
+        'cover_image_public_id',
         'is_visible',
     ];
 
@@ -21,9 +22,11 @@ class Gallery extends Model
         });
 
         static::updating(function ($gallery) {
-            // kalau title berubah, update slug juga
             if ($gallery->isDirty('title')) {
-                $gallery->slug = static::uniqueSlug($gallery->title, $gallery->id);
+                $gallery->slug = static::uniqueSlug(
+                    $gallery->title,
+                    $gallery->id
+                );
             }
         });
     }
@@ -37,17 +40,18 @@ class Gallery extends Model
         while (
             static::query()
                 ->where('slug', $slug)
-                ->when($ignoreId, fn($q) => $q->where('id', '!=', $ignoreId))
+                ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))
                 ->exists()
         ) {
-            $slug = $base . '-' . $i++;
+            $slug = $base.'-'.$i++;
         }
 
         return $slug;
     }
 
-    public function photos()
+    public function getCoverImageUrlAttribute(): string
     {
-        return $this->hasMany(GalleryPhoto::class);
+        return $this->cover_image
+            ?: 'https://via.placeholder.com/800x500';
     }
 }

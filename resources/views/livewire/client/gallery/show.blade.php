@@ -19,7 +19,7 @@
             {{-- Main Image Container --}}
             <div class="relative rounded-[2rem] overflow-hidden shadow-2xl shadow-gray-200 ring-1 ring-black/5 bg-white">
                 {{-- Menggunakan aspect-ratio yang responsive: Video standard di HP, Cinematic di Desktop --}}
-                <img src="{{ asset('storage/' . $gallery->cover_image) }}" 
+                <img src="{{ $gallery->cover_image_url}}" 
                      class="w-full aspect-video md:aspect-[21/9] object-cover transform transition duration-1000 hover:scale-105"
                      alt="{{ $gallery->title }}"
                      onerror="this.src='https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg';">

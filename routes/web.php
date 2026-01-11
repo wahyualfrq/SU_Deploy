@@ -137,7 +137,7 @@ Route::prefix('admin')
 
         Route::get('/galleries', AdminGalleryIndex::class)->name('gallery.index');
         Route::get('/galleries/create', GalleryCreate::class)->name('gallery.create');
-        Route::get('/galleries/{id}/edit', GalleryEdit::class)->name('gallery.edit');
+        Route::get('/galleries/{gallery}/edit',GalleryEdit::class)->name('gallery.edit');
         Route::prefix('matches')->name('matches.')->group(function () {
             Route::get('/', AdminMatchIndex::class)->name('index');
             Route::get('/create', AdminMatchCreate::class)->name('create');

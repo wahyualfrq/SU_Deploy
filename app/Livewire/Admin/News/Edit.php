@@ -6,7 +6,6 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\News;
 use Illuminate\Support\Str;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class Edit extends Component
 {
@@ -45,22 +44,25 @@ class Edit extends Component
     {
         $this->validate();
 
+        // default pakai gambar lama
         $imagePath = $this->news->image_path;
         $publicId  = $this->news->image_public_id;
 
+        // kalau upload gambar baru, prosesnya SAMA seperti Create
         if ($this->image) {
 
+            // hapus gambar lama
             if ($publicId) {
-                Cloudinary::destroy($publicId);
+                cloudinary()->uploadApi()->destroy($publicId);
             }
 
-            $upload = Cloudinary::upload(
+            $upload = cloudinary()->uploadApi()->upload(
                 $this->image->getRealPath(),
                 ['folder' => 'news']
             );
 
-            $imagePath = $upload->getSecurePath();
-            $publicId  = $upload->getPublicId();
+            $imagePath = $upload['secure_url'];
+            $publicId  = $upload['public_id'];
         }
 
         $this->news->update([

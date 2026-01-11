@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Galleries;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Gallery;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class GalleryCreate extends Component
 {
@@ -22,13 +23,15 @@ class GalleryCreate extends Component
     public function save()
     {
         $this->validate();
-
-        // SIMPAN COVER
-        $coverPath = $this->cover_image->store('gallery_covers', 'public');
+        $upload = cloudinary()->uploadApi()->upload(
+            $this->cover_image->getRealPath(),
+            ['folder' => 'galleries']
+        );
 
         Gallery::create([
             'title' => $this->title,
-            'cover_image' => $coverPath,
+            'cover_image' => $upload['secure_url'],
+            'cover_image_public_id' => $upload['public_id'],
             'is_visible' => $this->is_visible,
         ]);
 

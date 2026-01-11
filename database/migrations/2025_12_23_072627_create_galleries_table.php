@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->string('title');
             $table->string('slug')->unique();
             $table->string('cover_image')->nullable();
+            $table->string('cover_image_public_id')->nullable();
             $table->boolean('is_visible')->default(true);
             $table->timestamps();
         });
