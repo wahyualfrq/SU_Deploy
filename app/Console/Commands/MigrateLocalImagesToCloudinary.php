@@ -7,7 +7,7 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Support\Facades\File;
 use App\Models\Gallery;
 use App\Models\Player;
-use App\Models\News;
+use App\Models\Setting;
 
 class MigrateLocalImagesToCloudinary extends Command
 {
@@ -67,9 +67,10 @@ class MigrateLocalImagesToCloudinary extends Command
                 }
 
                 if ($filename === 'favicon.png') {
-                    News::whereNull('image_path')->update([
-                        'image_path' => $url
-                    ]);
+                    Setting::updateOrCreate(
+                        ['key' => 'favicon'],
+                        ['value' => $url]
+                    );
                 }
 
                 $this->info("Uploaded: {$filename}");
