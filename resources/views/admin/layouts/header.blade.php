@@ -15,7 +15,7 @@
             <!-- Brand -->
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 bg-white-600 rounded-full flex items-center justify-center">
-                    <img src="{{ asset('images/favicon.png') }}"
+                    <img src="{{ setting('favicon') }}"
                         alt="Sumsel United"
                         class="h-8 w-auto">
                 </div>

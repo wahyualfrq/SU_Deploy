@@ -37,7 +37,7 @@
             {{-- 1. LOGO AREA --}}
             <div class="flex-shrink-0 flex items-center">
                 <a href="{{ route('home') }}" class="flex items-center group transition-opacity hover:opacity-80">
-                    <img src="{{ asset('images/favicon.png') }}"
+                    <img src="{{ setting('favicon') }}"
                         class="h-10 w-10 transition-transform duration-300 group-hover:scale-105">
                     <span class="ml-3 text-xl font-bold tracking-tight text-gray-900">
                         Sumsel<span class="text-[#E11D48]">United</span>

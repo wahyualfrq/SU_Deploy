@@ -14,7 +14,7 @@
 
             {{-- Main Image --}}
 
-            <img src="{{ env('HERO_IMAGE') }}" class="w-full h-full object-cover object-center scale-105"
+            <img src="{{ setting('hero_image') }}" class="w-full h-full object-cover object-center scale-105"
                 alt="Suasana Stadion" loading="eager"
                 onerror="this.src='https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg';">
 
