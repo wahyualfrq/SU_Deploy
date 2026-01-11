@@ -28,45 +28,58 @@ class MigrateLocalImagesToCloudinary extends Command
         foreach ($files as $file) {
 
             $filename = $file->getFilename();
-            $extension = $file->getExtension();
             $fullPath = $file->getRealPath();
 
-            $base64 = base64_encode(file_get_contents($fullPath));
-            $dataUri = 'data:image/'.$extension.';base64,'.$base64;
+            $this->info("Uploading: {$filename}");
 
-            $upload = Cloudinary::upload($dataUri, [
-                'folder' => 'sumsel-united'
-            ]);
+            try {
 
-            $url = $upload->getSecurePath();
-
-            if ($filename === 'team.JPG') {
-                file_put_contents(
-                    base_path('.env'),
-                    PHP_EOL.'HERO_IMAGE='.$url,
-                    FILE_APPEND
-                );
-            }
-
-            if ($filename === 'blankprofile.png') {
-                Player::whereNull('photo_url')->update([
-                    'photo_url' => $url
+                $upload = Cloudinary::uploadApi()->upload($fullPath, [
+                    'folder' => 'sumsel-united'
                 ]);
-            }
 
-            if ($filename === 'stadion_sriwijaya.jpg') {
-                Gallery::whereNull('cover_image')->update([
-                    'cover_image' => $url
-                ]);
-            }
+                $url = $upload['secure_url'] ?? null;
 
-            if ($filename === 'favicon.png') {
-                News::whereNull('image_path')->update([
-                    'image_path' => $url
-                ]);
-            }
+                if (!$url) {
+                    $this->error("No URL returned for {$filename}");
+                    continue;
+                }
 
-            $this->info('Uploaded: '.$filename);
+                // Mapping ke sistem kamu
+                if ($filename === 'team.JPG') {
+                    file_put_contents(
+                        base_path('.env'),
+                        PHP_EOL . 'HERO_IMAGE=' . $url,
+                        FILE_APPEND
+                    );
+                }
+
+                if ($filename === 'blankprofile.png') {
+                    Player::whereNull('photo_url')->update([
+                        'photo_url' => $url
+                    ]);
+                }
+
+                if ($filename === 'stadion_sriwijaya.jpg') {
+                    Gallery::whereNull('cover_image')->update([
+                        'cover_image' => $url
+                    ]);
+                }
+
+                if ($filename === 'favicon.png') {
+                    News::whereNull('image_path')->update([
+                        'image_path' => $url
+                    ]);
+                }
+
+                $this->info("Uploaded: {$filename}");
+
+            } catch (\Throwable $e) {
+
+                $this->error("FAILED: {$filename}");
+                $this->error($e->getMessage());
+                continue;
+            }
         }
 
         $this->info('Migrasi selesai');
