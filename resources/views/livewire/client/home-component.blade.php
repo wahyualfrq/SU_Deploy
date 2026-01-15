@@ -614,7 +614,6 @@
                         <img src="{{ $gallery->cover_image_url}}"
                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale hover:grayscale-0"
                             onerror="this.src='https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg';">
-
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-300">
 
